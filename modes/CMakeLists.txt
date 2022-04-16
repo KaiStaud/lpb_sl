@@ -1,0 +1,1 @@
+add_library(modes modes.cpp)
