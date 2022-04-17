@@ -4,7 +4,7 @@
 #include <chrono>
 #include <sys/time.h>
 #include <ctime>
-#include "tracker/tracking.hpp"
+#include "lib/include/tracking.hpp"
 #include "CLI11/CLI.hpp"
 
 #include "nlohmann/json.hpp"
