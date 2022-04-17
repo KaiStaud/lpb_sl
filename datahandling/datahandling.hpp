@@ -16,8 +16,6 @@ namespace Datahandling
     class Serde
     {
         Serde();
-        void serialize_track();
-        void deserialize_track();
         void load_configfile();
         void write_configfile();
     };

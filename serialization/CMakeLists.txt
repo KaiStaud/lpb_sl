@@ -1,0 +1,2 @@
+add_library(serialization serialization.cpp)
+target_link_libraries(serialization tracker)

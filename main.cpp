@@ -9,88 +9,16 @@
 
 #include "nlohmann/json.hpp"
 #include "string"
-#include <sstream>
 
 using namespace tracking;
 using nlohmann::json;
 
-// Serialize single star into json-struct
-std::string to_json(const star &r)
-{
-    json j = json{
-
-        {"star", {
-                     "arm0",
-                     r.arm0,
-                     "arm1",
-                     r.arm1,
-                     "arm2",
-                     r.arm2,
-                     "arm3",
-                     r.arm3,
-                     "tcp",
-                     r.tcp,
-                 }},
-    };
-    return j.dump();
-}
-// Serialize complete constellation:
-std::string serialize_constellation(const constellation &c)
-{
-    std::string result;
-    result += "{";
-    // Serialize each star into string:
-    for (int i = 0; i < c.stars.size(); i++)
-    {
-        result += to_json(c.stars[i]);
-        result += "#"; // Endcharacter of star
-        // End of Star-Serialization
-    }
-    result += "},";
-    // All starts done
-    // "Standard" types can be serialized by API
-    json j = json{
-        {"timestamp", c.timestamps},
-    };
-    result += j.dump();
-    return result;
-}
-star deserialize_star(std::string str)
-{
-    // Get string between two
-    // r.id = j.at("id").get<int>();
-    // r.name = j.at("name").get<std::string>();
-    //     r.maxPlayers = j.at("maxPlayers").get<int>();
-    //     r.timePerQuestion = j.at("timePerQuestion").get<int>();
-    //     r.isActive = j.at("timePerQuestion").get<int>();
-}
-
-std::vector<std::int32_t> deserialize_timestamps(std::string str)
-{
-}
-// Deserialize into constellations
-constellation deserialize_constellation(std::string str)
-{
-    constellation cst;
-    std::string segment;
-    std::vector<std::string> seglist;
-
-    while (std::getline(str, segment, '#'))
-    {
-        seglist.push_back(segment);
-    }
-    // Pop star elements from front
-    while (seglist.size() > 1)
-    {
-        std::string seg = seglist.front();
-        seglist.erase(seglist.begin());
-        cst.stars.push_back(deserialize_star(seg));
-    }
-    // Last remaining element is timestamp string
-    deserialize_timestamps(seglist.front());
-    seglist.clear(); // clear vector for new task
-    return cst;
-}
+// (Deserialize a star)
+void to_json(json &j, const star &s);
+void from_json(const json &j, star &s);
+// (De)Serialize a constellation
+void to_json(json &j, const constellation &s);
+void from_json(const json &j, constellation &s);
 
 std::string timeToString(std::chrono::system_clock::time_point &t)
 {
@@ -99,6 +27,49 @@ std::string timeToString(std::chrono::system_clock::time_point &t)
     time_str.resize(time_str.size() - 1);
     return time_str;
 }
+
+void to_json(json &j, const star &s)
+{
+    j = json{
+        //{"name", s.name},
+        {"arm0", s.arm0},
+        {"arm1", s.arm1},
+        {"arm2", s.arm2},
+        {"arm3", s.arm3},
+        {"tcp", s.tcp},
+        //{"id", s.id}
+    };
+}
+
+void from_json(const json &j, star &s)
+{
+    // j.at("name").get_to(s.name);
+    j.at("arm0").get_to(s.arm0);
+    j.at("arm1").get_to(s.arm1);
+    j.at("arm2").get_to(s.arm2);
+    j.at("arm3").get_to(s.arm3);
+    j.at("tcp").get_to(s.tcp);
+    // j.at("id").get_to(s.id);
+}
+
+void to_json(json &j, const constellation &s)
+{
+    j = json{
+        {"stars", {s.stars}},
+        {"timestamps", {s.timestamps}},
+        //{"track_name", s.track_name},
+        //{"track_id", s.track_id},
+    };
+}
+
+void from_json(const json &j, constellation &s)
+{
+    j.at("stars").get_to(s.stars);
+    j.at("timestamps").get_to(s.timestamps);
+    // j.at("track_name").get_to(s.track_name);
+    // j.at("track_id").get_to(s.track_id);
+}
+
 int main(int argc, char **argv)
 {
     CLI::App app{"cli to control robotic arm"};
@@ -147,11 +118,7 @@ int main(int argc, char **argv)
 
     cst.timestamps.push_back(1);
     cst.timestamps.push_back(2);
-    // Serialize constellation into string:
-    // RoomData r{{{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 0, 1}, {2, 3, 4}}, 100};
-    // std::cout << to_json(r);
-    std::string str = serialize_constellation(cst);
-    constellation cst_1 = deserialize_constellation(cst);
-    // Save json-string in db:
+    json j = cst;
+    std::cout << std::setw(4) << j << "\n\n";
     return 0;
 }

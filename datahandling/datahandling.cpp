@@ -25,13 +25,6 @@ void Storage::get_track()
 {
 }
 
-void Serde::serialize_track()
-{
-}
-
-void Serde::deserialize_track()
-{
-}
 void Serde::load_configfile()
 {
 }
