@@ -10,7 +10,6 @@ cli11/2.2.0
 yaml-cpp/0.7.0
 magic_enum/0.7.3
 boost/1.78.0
-libevent/2.1.12
 
  [generators]
  cmake
