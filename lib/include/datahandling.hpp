@@ -1,5 +1,8 @@
+#ifndef DATAHANDLING_H
+#define DATAHANDLING_H
+
 #include <string>
-#include <tracker/tracking.hpp>
+#include "tracking.hpp"
 namespace Datahandling
 {
 
@@ -21,3 +24,4 @@ namespace Datahandling
     };
 
 }
+#endif

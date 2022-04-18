@@ -1,4 +1,4 @@
-#include "serialization.hpp"
+#include "../include/serialization.hpp"
 void to_json(json &j, const star &s)
 {
     j = json{

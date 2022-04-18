@@ -1,22 +1,25 @@
+#ifndef TRACKING_H
+#define TRACKING_H
+
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <vector>
 #include <etl/circular_buffer.h>
 #include <optional>
-typedef struct
+struct star
 {
     std::int32_t arm0[3];
     std::int32_t arm1[3];
     std::int32_t arm2[3];
     std::int32_t arm3[3];
     std::int32_t tcp[3];
-} star;
+} ;
 
-typedef struct
+struct constellation
 {
     std::vector<star> stars;
     std::vector<std::int32_t> timestamps;
-} constellation;
+} ;
 
 namespace tracking
 {
@@ -38,3 +41,4 @@ namespace tracking
     };
 
 }
+#endif
