@@ -10,7 +10,7 @@
 #include "CLI11/CLI.hpp"
 #include "string"
 
-#include "lib/include/DataRouter.hpp"
+#include "lib/include/datarouter.hpp"
 using namespace tracking;
 using nlohmann::json;
 
