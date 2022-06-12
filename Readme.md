@@ -46,3 +46,12 @@ SPI6 needs to be enabled with provided device tree overlay.
 | 23 | ENC2.A    |              |        |Encoder 2                 |
 | 24 | ENC2.~A   |              |        |Encoder 2                 |  
 | 25 | ENC2.~PB  |              |        |Encoder 2                 |
+
+# Statusleds
+| # | name        | blink rate     | description                                    |   |
+|---|-------------|----------------|------------------------------------------------|---|
+| 1 | run         | 1 Hz,2 Hz,3 Hz | sw is running, configuring, downloading config |   |
+| 2 | can-err     | 1 Hz, 2 Hz     | general error,not initialized                  |   |
+| 3 | tx overflow |                | message couldn't be sent, no space in queue    |   |
+| 4 | rx error    | 2 Hz           | lost message, error frame                      |   |
+| 5 | i/o error   |                |                                                |   |

@@ -5,20 +5,15 @@
 #include <sqlite_orm/sqlite_orm.h>
 #include "lib/include/datarouter.hpp"
 #include "lib/include/cli.hpp"
-
+#include "spdlog/spdlog.h"
 using namespace tracking;
 using nlohmann::json;
-
-struct Cached_Constellation{
-    int id;
-    std::string blob;
-};
 
 int main(int argc, char **argv)
 {
     cli debug_interface;
     debug_interface.execute(argc,argv);
-
+  spdlog::info("Starting Devices...");
     auto time_p = std::chrono::system_clock::now();
     fmt::print("Running Version {}.{}.{} @ {}\r\n", 0, 0, 0, timeToString(time_p));
 
