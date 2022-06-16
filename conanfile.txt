@@ -9,7 +9,7 @@ etl/20.27.1
 cli11/2.2.0
 yaml-cpp/0.7.0
 magic_enum/0.7.3
-
+sqlite3/3.38.5
 # asio socket for can bus
 boost/1.78.0
 

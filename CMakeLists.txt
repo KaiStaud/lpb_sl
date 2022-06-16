@@ -18,4 +18,5 @@ add_executable(lpb_sl main.cpp)
 target_link_libraries(lpb_sl 
     ${CONAN_LIBS} 
     lib
+    sqlite3
     )

@@ -62,7 +62,6 @@ int main(int argc, char **argv)
   std::cout << std::endl;
 
   router.process_queue();
-  sqlite3_close(db);
 
   return 0;
 }

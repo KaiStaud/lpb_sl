@@ -1,5 +1,6 @@
 #include <../include/datahandling.hpp>
 #include <iostream>
+#include <sqlite3.h> 
 
 using namespace Datahandling;
 
@@ -16,7 +17,7 @@ Storage::Storage(std::string db_path)
     char *sql;
 
     /* Open database */
-    rc = sqlite3_open("constellations.db", &db);
+    rc = sqlite3_open("constellations.sqlite", &db);
 
     if (rc)
     {
@@ -90,7 +91,7 @@ void Storage::insert_constellation(std::string s)
     const char *sql;
     const char *data = "Callback function called";
     /* Create SQL statement */
-    std::string s_sql = "insert into SERDE_CONSTELLATIONS (BLOB) VALUES("+s+ ")";
+    std::string s_sql = "insert into SERDE_CONSTELLATIONS (BLOB) VALUES('"+s+ "')";
     sql = s_sql.c_str();
     /* Execute SQL statement */
     rc = sqlite3_exec(db, sql, callback, (void *)data, &zErrMsg);
