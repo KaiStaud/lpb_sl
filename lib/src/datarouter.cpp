@@ -1,13 +1,12 @@
 #include "../include/datarouter.hpp"
-#include <sqlite_orm/sqlite_orm.h>
 #include "spdlog/spdlog.h"
 
-using namespace sqlite_orm;
+// using namespace sqlite_orm;
 
-auto db = make_storage("constellations.sqlite",
-                       make_table("SERDE_CONSTELLATIONS",
-                                  make_column("ID", &Cached_Constellation::id, primary_key()),
-                                  make_column("BLOB", &Cached_Constellation::blob)));
+// auto db = make_storage("constellations.sqlite",
+//                        make_table("SERDE_CONSTELLATIONS",
+//                                   make_column("ID", &Cached_Constellation::id, primary_key()),
+//                                   make_column("BLOB", &Cached_Constellation::blob)));
 
 //*****************************************************************************
 // The message router.
@@ -51,10 +50,10 @@ void Router::process_queue()
  */
 void Router::on_receive(const ConstellationRequestMsg &msg)
 {
-  for (auto &serialized_constellation : db.iterate<Cached_Constellation>())
-  {
-    std::cout << db.dump(serialized_constellation) << std::endl;
-  }
+  // for (auto &serialized_constellation : db.iterate<Cached_Constellation>())
+  // {
+  //   std::cout << db.dump(serialized_constellation) << std::endl;
+  // }
 }
 
 //***************************************************************************
@@ -70,7 +69,7 @@ void Router::on_receive(const Message2 &msg)
 void Router::on_receive(const ConstellationCreateMsg &msg)
 {
  spdlog::info("Received a Constellation Create message ID {},{} ",int(msg.get_message_id()),msg.s);
-  //    db.insert( Cached_Constellation{ -1,msg.s});
+//  db.insert( Cached_Constellation{ -1,msg.s});
 }
 
 //***************************************************************************
@@ -84,6 +83,6 @@ void Router::on_receive_unknown(const etl::imessage &msg)
 
 void Router::init_storage()
 {
-  db.sync_schema();
-  db.remove_all<Cached_Constellation>();
+//  db.sync_schema();
+//  db.remove_all<Cached_Constellation>();
 }

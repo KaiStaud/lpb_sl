@@ -11,7 +11,7 @@
 #include <string>
 
 struct Cached_Constellation{
-    int id;
+//    int id;
     std::string blob;
 };
 
