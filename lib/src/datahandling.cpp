@@ -1,8 +1,5 @@
 #include <../include/datahandling.hpp>
 #include <iostream>
-#include "../../SQLiteCpp/include/SQLiteCpp/SQLiteCpp.h"
-
-SQLite::Database db("constellations.sqlite", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 
 using namespace Datahandling;
 
@@ -14,6 +11,21 @@ struct Cached_Constellation
 
 Storage::Storage(std::string db_path)
 {
+    char *zErrMsg = 0;
+    int rc;
+    char *sql;
+
+    /* Open database */
+    rc = sqlite3_open("constellations.db", &db);
+
+    if (rc)
+    {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+    }
+    else
+    {
+        fprintf(stdout, "Opened database successfully\n");
+    }
 }
 
 Serde::Serde()
@@ -33,32 +45,65 @@ void Storage::set_bootparams()
 void Storage::spin_off()
 {
 }
-void Storage::get_by_id()
-{    
-    SQLite::Statement   query(db, "SELECT * FROM SERDE_CONSTELLATIONS");
 
-        // Loop to execute the query step by step, to get rows of result
-    while (query.executeStep())
+static int callback(void *data, int argc, char **argv, char **azColName)
+{
+    int i;
+    fprintf(stderr, "%s: ", (const char *)data);
+
+    for (i = 0; i < argc; i++)
     {
-        // Demonstrate how to get some typed column value
-        int         id      = query.getColumn(0);
-        const char* value   = query.getColumn(1);
-      
-        std::cout << "row: " << id << ", " << value << ", " << std::endl;
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+
+    printf("\n");
+    return 0;
+}
+
+void Storage::get_by_id(std::int16_t id)
+{
+    char *zErrMsg = 0;
+    int rc;
+    const char *sql;
+    const char *data = "Callback function called";
+    /* Create SQL statement */
+    std::string s_sql = "SELECT * from SERDE_CONSTELLATIONS where ID="+std::to_string(id);
+    sql = s_sql.c_str();
+    /* Execute SQL statement */
+    rc = sqlite3_exec(db, sql, callback, (void *)data, &zErrMsg);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    else
+    {
+        fprintf(stdout, "Operation done successfully\n");
     }
 }
 
 void Storage::insert_constellation(std::string s)
 {
-    // Begin transaction
-    SQLite::Transaction transaction(db);
+    char *zErrMsg = 0;
+    int rc;
+    const char *sql;
+    const char *data = "Callback function called";
+    /* Create SQL statement */
+    std::string s_sql = "insert into SERDE_CONSTELLATIONS (BLOB) VALUES("+s+ ")";
+    sql = s_sql.c_str();
+    /* Execute SQL statement */
+    rc = sqlite3_exec(db, sql, callback, (void *)data, &zErrMsg);
 
-    //    db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)");
-
-    int nb = db.exec("INSERT INTO SERDE_CONSTELLATIONS VALUES (3, \"tsest\")");
-    std::cout << "INSERT INTO test VALUES (3, \"test\")\", returned " << nb << std::endl;
-    transaction.commit();
-
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    else
+    {
+        fprintf(stdout, "Operation done successfully\n");
+    }
 }
 
 void Serde::load_configfile()

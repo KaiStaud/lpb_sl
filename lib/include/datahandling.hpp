@@ -3,6 +3,7 @@
 
 #include <string>
 #include "tracking.hpp"
+#include <sqlite3.h> 
 
 namespace Datahandling
 {
@@ -20,10 +21,12 @@ namespace Datahandling
         void get_bootparams();
         void set_bootparams();
         void spin_off();
-        void get_by_id();
+        void get_by_id(std::int16_t id);
         void insert_constellation(std::string s);
         void open_db();
         private:
+        sqlite3 *db;
+
 
     };
     class Serde

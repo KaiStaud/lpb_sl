@@ -3,25 +3,18 @@
 #include "lib/include/tracking.hpp"
 #include "lib/include/serialization.hpp"
 #include "lib/include/datarouter.hpp"
+#include "lib/include/datahandling.hpp"
 #include "lib/include/cli.hpp"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/daily_file_sink.h"
-#include "lib/include/datahandling.hpp"
+
 using namespace tracking;
 using nlohmann::json;
 
 int main(int argc, char **argv)
 {
-
-  try
-{
-
-
-}
-catch (std::exception& e)
-{
-    std::cout << "exception: " << e.what() << std::endl;
-}
+  Datahandling::Storage st("Test");
+  st.insert_constellation("test");
 
   cli debug_interface;
   debug_interface.execute(argc, argv);
@@ -69,5 +62,7 @@ catch (std::exception& e)
   std::cout << std::endl;
 
   router.process_queue();
+  sqlite3_close(db);
+
   return 0;
 }
