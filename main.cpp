@@ -8,16 +8,25 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/daily_file_sink.h"
 
+#include "shared_types.hpp"
+
+#include "iceoryx_hoofs/posix_wrapper/signal_watcher.hpp"
+#include "iceoryx_posh/popo/subscriber.hpp"
+#include "iceoryx_posh/runtime/posh_runtime.hpp"
+
+#include <iostream>
+
 using namespace tracking;
 using nlohmann::json;
 
 int main(int argc, char **argv)
 {
   Datahandling::Storage st("Test");
-  st.insert_constellation("test");
+  st.insert_constellation("test2");
 
   cli debug_interface;
   debug_interface.execute(argc, argv);
+std::string s;
 
   auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.log", 2, 30);
   spdlog::set_default_logger(logger);
@@ -63,5 +72,42 @@ int main(int argc, char **argv)
 
   router.process_queue();
 
+    //! [initialize runtime]
+    constexpr char APP_NAME[] = "iox-cpp-subscriber-helloworld";
+    iox::runtime::PoshRuntime::initRuntime(APP_NAME);
+    //! [initialize runtime]
+
+    //! [initialize subscriber]
+    iox::popo::Subscriber<RadarObject> subscriber({"Radar", "FrontLeft", "Object"});
+    //! [initialize subscriber]
+
+    // run until interrupted by Ctrl-C
+    while (!iox::posix::hasTerminationRequested())
+    {
+        //! [receive]
+        auto takeResult = subscriber.take();
+        if (!takeResult.has_error())
+        {
+            std::cout << APP_NAME << " got value: " << takeResult.value()->x << std::endl;
+        }
+        //! [receive]
+        else
+        {
+            //! [error]
+            if (takeResult.get_error() == iox::popo::ChunkReceiveResult::NO_CHUNK_AVAILABLE)
+            {
+                std::cout << "No chunk available." << std::endl;
+            }
+            else
+            {
+                std::cout << "Error receiving chunk." << std::endl;
+            }
+            //! [error]
+        }
+
+        //! [wait]
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        //! [wait]
+    }
   return 0;
 }
