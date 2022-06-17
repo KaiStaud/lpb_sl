@@ -1,9 +1,13 @@
-/*
-* Provides System Information:
-* - Version, System Time
-* - IO and CPU Load
-* - IO Configuration and Errors
-*/
+/**
+ * @file sysinfo.hpp
+ * @author Kai Staud
+ * @brief Provides System Information for Log-Information
+ * @version 0.1
+ * @date 2022-06-04
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include <chrono>
 #include <string>

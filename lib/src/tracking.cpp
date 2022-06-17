@@ -1,3 +1,14 @@
+/**
+ * @file tracking.cpp
+ * @author your name (you@domain.com)
+ * @brief Implemenation of Progress Tracking,multi-buffering
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "../include/tracking.hpp"
 #include "fmt/core.h"
 

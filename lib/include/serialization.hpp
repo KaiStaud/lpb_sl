@@ -1,3 +1,14 @@
+/**
+ * @file serialization.hpp
+ * @author Kai Staud
+ * @brief Serialize Positions into JSON
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #ifndef SERIALIZATION_H
 #define SERIALIZATION_H
 #include "nlohmann/json.hpp"

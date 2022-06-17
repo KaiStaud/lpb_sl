@@ -1,3 +1,14 @@
+/**
+ * @file datahandling.hpp
+ * @author Kai Staud
+ * @brief Abstract SQLite3 and provides Startup Data
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #ifndef DATAHANDLING_H
 #define DATAHANDLING_H
 

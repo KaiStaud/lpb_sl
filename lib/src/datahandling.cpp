@@ -1,3 +1,14 @@
+/**
+ * @file datahandling.cpp
+ * @author your name (you@domain.com)
+ * @brief Implementation of DB Handling and Startup data
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include <../include/datahandling.hpp>
 #include <iostream>
 #include <sqlite3.h> 

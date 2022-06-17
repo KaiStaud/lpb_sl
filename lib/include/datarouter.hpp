@@ -1,7 +1,15 @@
-/*
- * Route messages / queues between mutiple program entities.
- * Constellations / Stars / Tracks are forwareded between db and tracking logic.
- * The router also has access to the MQTT Client to receive messages from outside.
+/**
+ * @file datarouter.hpp
+ * @author Kai Staud
+ * @brief  Route messages / queues between mutiple program entities.
+  Constellations / Stars / Tracks are forwareded between db and tracking logic.
+  The router also has access to the MQTT Client to receive messages from outside.
+ 
+ * @version 0.1
+ * @date 2022-05-27
+ * 
+ * @copyright Copyright (c) 2022
+ * 
  */
 
 #include "etl/queue.h"

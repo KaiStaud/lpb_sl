@@ -1,3 +1,14 @@
+/**
+ * @file serialization.cpp
+ * @author Kai Staud
+ * @brief Implements SERDES functionality for Nlohmanns JSON lib  
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "../include/serialization.hpp"
 void to_json(json &j, const star &s)
 {

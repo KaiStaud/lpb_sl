@@ -1,3 +1,14 @@
+/**
+ * @file cli.hpp
+ * @author Kai Staud
+ * @brief Provide user and dev options to control ECU
+ * @version 0.1
+ * @date 2022-06-04
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "CLI11/CLI.hpp"
 #include <string>
 class cli{

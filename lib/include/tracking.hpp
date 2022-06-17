@@ -1,3 +1,14 @@
+/**
+ * @file tracking.hpp
+ * @author Kai Staud
+ * @brief Implements a multi-buffered Job-Queue
+ * @version 0.1
+ * @date 2022-04-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #ifndef TRACKING_H
 #define TRACKING_H
 #include "fmt/core.h"

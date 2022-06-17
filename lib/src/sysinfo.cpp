@@ -1,3 +1,14 @@
+/**
+ * @file sysinfo.cpp
+ * @author your name (you@domain.com)
+ * @brief Provide System Information (Load,Temps,Data etc.)
+ * @version 0.1
+ * @date 2022-06-04
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include <../include/sysinfo.hpp>
 #include <sys/time.h>
 #include <ctime>
