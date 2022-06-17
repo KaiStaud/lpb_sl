@@ -1,19 +1,22 @@
-cmake_minimum_required(VERSION 3.1)
+# Copyright (c) 2021 - 2022 by Apex.AI Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
 
-# SQLiteC++ 3.x now requires C++11 compiler
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
- project(LPB_SL)
-
- add_definitions("-std=c++17")
-
- include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
- conan_basic_setup()
-
-add_subdirectory(lib)
-link_directories(${LPB_SL_SOURCE_DIR}/lib/include)
-link_directories(${LPB_SL_SOURCE_DIR}/lib/src)
-#add_executable(lpb_sl main.cpp)
+# Build icehello example
+cmake_minimum_required(VERSION 3.16)
+project(example_icehello)
 
 include(GNUInstallDirs)
 
@@ -26,13 +29,35 @@ include(IceoryxPlatform)
 include(IceoryxPackageHelper)
 
 iox_add_executable(
-    TARGET  lpb_sl
-    FILES   ./main.cpp
+    TARGET  iox-lpb-cli
+    FILES   ./iox_lpb_cli.cpp
     LIBS    iceoryx_posh::iceoryx_posh
 )
 
-target_link_libraries(lpb_sl 
-    ${CONAN_LIBS} 
+iox_add_executable(
+    TARGET  iox-lpb-backbone
+    FILES   ./iox_lpb_backbone.cpp
+    LIBS    iceoryx_posh::iceoryx_posh
+)
+
+add_subdirectory(lib)
+link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/include)
+link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/src)
+
+add_subdirectory(external/CLI11)
+add_subdirectory(external/fmt)
+add_subdirectory(external/json)
+add_subdirectory(external/spdlog)
+add_subdirectory(external/etl)
+
+target_include_directories(iox-lpb-backbone
+PUBLIC external/fmt
+PUBLIC external/json
+PUBLIC external/spdlog
+PUBLIC external/CLI11
+PUBLIC lib/include)
+
+target_link_libraries(iox-lpb-backbone 
     lib
     sqlite3
     )

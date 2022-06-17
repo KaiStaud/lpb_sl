@@ -1,4 +1,6 @@
 #include "../include/tracking.hpp"
+#include "fmt/core.h"
+
 using namespace tracking;
 
 TaskHandler::TaskHandler()

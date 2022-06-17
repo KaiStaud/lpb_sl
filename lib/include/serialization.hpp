@@ -1,10 +1,10 @@
 #ifndef SERIALIZATION_H
 #define SERIALIZATION_H
-
 #include "nlohmann/json.hpp"
 #include "string"
 #include "tracking.hpp"
 using namespace tracking;
+
 using nlohmann::json;
 
 void to_json(json &j, const star &s);

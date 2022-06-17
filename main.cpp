@@ -8,12 +8,6 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/daily_file_sink.h"
 
-#include "shared_types.hpp"
-
-#include "iceoryx_hoofs/posix_wrapper/signal_watcher.hpp"
-#include "iceoryx_posh/popo/subscriber.hpp"
-#include "iceoryx_posh/runtime/posh_runtime.hpp"
-
 #include <iostream>
 
 using namespace tracking;
