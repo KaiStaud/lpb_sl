@@ -61,3 +61,7 @@ PUBLIC lib/include)
 target_link_libraries(iox-lpb-backbone 
     lib
     )
+
+target_link_libraries(iox-lpb-cli 
+lib
+)

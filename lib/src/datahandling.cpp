@@ -3,7 +3,6 @@
 #include <sqlite3.h> 
 
 using namespace Datahandling;
-
 struct Cached_Constellation
 {
     int id;

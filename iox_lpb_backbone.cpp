@@ -28,8 +28,8 @@
 #include "lib/include/datarouter.hpp"
 #include "lib/include/datahandling.hpp"
 #include "lib/include/cli.hpp"
-// #include "spdlog/spdlog.h"
-// #include "spdlog/sinks/daily_file_sink.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/daily_file_sink.h"
 
 using namespace tracking;
 using nlohmann::json;
@@ -45,9 +45,9 @@ int main(int argc, char **argv)
   debug_interface.execute(argc, argv);
 std::string s;
 
-//    auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.log", 2, 30);
-//    spdlog::set_default_logger(logger);
-//    spdlog::info("Starting Devices...");
+   auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.log", 2, 30);
+   spdlog::set_default_logger(logger);
+   spdlog::info("Starting Devices...");
 
    auto time_p = std::chrono::system_clock::now();
    fmt::print("Running Version {}.{}.{} @ {}\r\n", 0, 0, 0, timeToString(time_p));
