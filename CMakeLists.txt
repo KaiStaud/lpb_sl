@@ -13,9 +13,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(lib)
 link_directories(${LPB_SL_SOURCE_DIR}/lib/include)
 link_directories(${LPB_SL_SOURCE_DIR}/lib/src)
-add_executable(lpb_sl main.cpp)
+#add_executable(lpb_sl main.cpp)
 
-
+include(GNUInstallDirs)
 
 find_package(iceoryx_posh CONFIG REQUIRED)
 find_package(iceoryx_hoofs CONFIG REQUIRED)
@@ -24,6 +24,12 @@ get_target_property(ICEORYX_CXX_STANDARD iceoryx_posh::iceoryx_posh CXX_STANDARD
 
 include(IceoryxPlatform)
 include(IceoryxPackageHelper)
+
+iox_add_executable(
+    TARGET  lpb_sl
+    FILES   ./main.cpp
+    LIBS    iceoryx_posh::iceoryx_posh
+)
 
 target_link_libraries(lpb_sl 
     ${CONAN_LIBS} 
