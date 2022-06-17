@@ -49,6 +49,7 @@ add_subdirectory(external/fmt)
 add_subdirectory(external/json)
 add_subdirectory(external/spdlog)
 add_subdirectory(external/etl)
+add_subdirectory(external/SQLiteCpp)
 
 target_include_directories(iox-lpb-backbone
 PUBLIC external/fmt
@@ -59,5 +60,4 @@ PUBLIC lib/include)
 
 target_link_libraries(iox-lpb-backbone 
     lib
-    sqlite3
     )

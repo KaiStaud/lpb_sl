@@ -4,6 +4,7 @@
 #include <string>
 #include "tracking.hpp"
 #include <sqlite3.h> 
+#include "SQLiteCpp/SQLiteCpp.h"
 
 namespace Datahandling
 {
