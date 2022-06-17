@@ -22,3 +22,6 @@
 [submodule "external/Catch2"]
 	path = external/Catch2
 	url = https://github.com/catchorg/Catch2
+[submodule "external/CppGPIO"]
+	path = external/CppGPIO
+	url = https://github.com/JoachimSchurig/CppGPIO

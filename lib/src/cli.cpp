@@ -58,7 +58,7 @@ void cli::init_dev_shortcuts()
     auto reinit = app.add_subcommand("reinit", "Re-Initialize system");
     auto delete_errors = app.add_subcommand("delete-errors", "Delete errors");
     auto no_crypt = app.add_subcommand("no-crypt", "Run without encrypted comms");
-    auto no_crypt = app.add_subcommand("pdo", "Watch PDOs while running");
+    auto watch_pdo = app.add_subcommand("pdo", "Watch PDOs while running");
 }
 
 void cli::set_config(std::string new_config)
