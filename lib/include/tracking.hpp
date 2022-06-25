@@ -16,6 +16,19 @@
 #include <vector>
 #include <etl/circular_buffer.h>
 #include <optional>
+
+/**
+ * @brief Abstracts an array into an new datatype
+ * 
+ */
+struct star{
+std::int32_t xyz[3];
+};
+
+/**
+ * @brief Structure encapsulation several stars
+ * 
+ */
 struct constellation
 {
     std::int32_t arm0[3];
@@ -25,6 +38,10 @@ struct constellation
     std::int32_t tcp[3];
 } ;
 
+/**
+ * @brief Structure encapsuling a constellation with a seperated timestamp
+ * 
+ */
 struct track
 {
     std::vector<constellation> stars;
@@ -33,7 +50,10 @@ struct track
 
 namespace tracking
 {
-
+/**
+ * @brief Class for Deploying and commiting jobs.
+ * Jobs are buffered in multiple stages
+ */
     class TaskHandler
     {
     private:
