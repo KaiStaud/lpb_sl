@@ -9,11 +9,11 @@
  * 
  */
 
-#include "topic_data.hpp"
+// #include "topic_data.hpp"
 
-#include "iceoryx_hoofs/posix_wrapper/signal_watcher.hpp"
-#include "iceoryx_posh/popo/subscriber.hpp"
-#include "iceoryx_posh/runtime/posh_runtime.hpp"
+// #include "iceoryx_hoofs/posix_wrapper/signal_watcher.hpp"
+// #include "iceoryx_posh/popo/subscriber.hpp"
+// #include "iceoryx_posh/runtime/posh_runtime.hpp"
 //! [include]
 #include "fmt/core.h"
 #include "lib/include/sysinfo.hpp"
@@ -76,42 +76,42 @@ track1.stars.push_back(constellation1);
 
  router.process_queue();
     //! [initialize runtime]
-    constexpr char APP_NAME[] = "iox-cpp-subscriber-helloworld";
-    iox::runtime::PoshRuntime::initRuntime(APP_NAME);
-    //! [initialize runtime]
+    // constexpr char APP_NAME[] = "iox-cpp-subscriber-helloworld";
+    // iox::runtime::PoshRuntime::initRuntime(APP_NAME);
+    // //! [initialize runtime]
 
-    //! [initialize subscriber]
-    iox::popo::Subscriber<RadarObject> subscriber({"Radar", "FrontLeft", "Object"});
-    //! [initialize subscriber]
+    // //! [initialize subscriber]
+    // iox::popo::Subscriber<RadarObject> subscriber({"Radar", "FrontLeft", "Object"});
+    // //! [initialize subscriber]
 
-    // run until interrupted by Ctrl-C
-    while (!iox::posix::hasTerminationRequested())
-    {
-        //! [receive]
-        auto takeResult = subscriber.take();
-        if (!takeResult.has_error())
-        {
-            std::cout << APP_NAME << " got value: " << takeResult.value()->x << std::endl;
-        }
-        //! [receive]
-        else
-        {
-            //! [error]
-            if (takeResult.get_error() == iox::popo::ChunkReceiveResult::NO_CHUNK_AVAILABLE)
-            {
-                std::cout << "No chunk available." << std::endl;
-            }
-            else
-            {
-                std::cout << "Error receiving chunk." << std::endl;
-            }
-            //! [error]
-        }
+    // // run until interrupted by Ctrl-C
+    // while (!iox::posix::hasTerminationRequested())
+    // {
+    //     //! [receive]
+    //     auto takeResult = subscriber.take();
+    //     if (!takeResult.has_error())
+    //     {
+    //         std::cout << APP_NAME << " got value: " << takeResult.value()->x << std::endl;
+    //     }
+    //     //! [receive]
+    //     else
+    //     {
+    //         //! [error]
+    //         if (takeResult.get_error() == iox::popo::ChunkReceiveResult::NO_CHUNK_AVAILABLE)
+    //         {
+    //             std::cout << "No chunk available." << std::endl;
+    //         }
+    //         else
+    //         {
+    //             std::cout << "Error receiving chunk." << std::endl;
+    //         }
+    //         //! [error]
+    //     }
 
-        //! [wait]
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        //! [wait]
-    }
+    //     //! [wait]
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //     //! [wait]
+    // }
 
-    return (EXIT_SUCCESS);
+    // return (EXIT_SUCCESS);
 }

@@ -12,6 +12,9 @@
 #include "CLI11/CLI.hpp"
 #include <string>
 #include <variant>
+#include "fmt/core.h"
+#include "tracking.hpp"
+#include "serialization.hpp"
 
 enum class ParsingErrors
 {
@@ -43,16 +46,31 @@ public:
     int execute(int argc, char **argv);
 
     /* Helpers for CLI User Guidance*/
-    std::variant<std::string, ParsingErrors> QueryStar(){
-        
+    std::variant<std::string, ParsingErrors> QueryStar()
+    {
+        star st;
+        try{
+        fmt::print("Enter x Coordinate:");
+        std::cin >> st.xyz[0];
+        fmt::print("Enter y Coordinate:");
+        std::cin >> st.xyz[1];
+        fmt::print("Enter z Coordinate:");
+        std::cin >> st.xyz[2];
+        return "";
+        }
+        catch(const std::exception ex){
+            return ParsingErrors::incorrect_input;
+        }
     }
 
-    std::variant<std::string, ParsingErrors> QueryConstellation(){
-
+    std::variant<std::string, ParsingErrors> QueryConstellation(std::uint8_t num_stars)
+    {
+        //std::string constellation;
+        //for(int i=0;i<num_stars;i++)
     }
 
-    std::variant<std::string, ParsingErrors> QueryTrack(){
-
+    std::variant<std::string, ParsingErrors> QueryTrack()
+    {
     }
 
 private:

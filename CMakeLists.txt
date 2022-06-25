@@ -15,32 +15,35 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Build icehello example
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.13)
 project(example_icehello)
 set (CMAKE_CXX_STANDARD 20)
 include(GNUInstallDirs)
 
-find_package(iceoryx_posh CONFIG REQUIRED)
-find_package(iceoryx_hoofs CONFIG REQUIRED)
+#find_package(iceoryx_posh CONFIG REQUIRED)
+#find_package(iceoryx_hoofs CONFIG REQUIRED)
 
-get_target_property(ICEORYX_CXX_STANDARD iceoryx_posh::iceoryx_posh CXX_STANDARD)
-include(IceoryxPlatform)
-include(IceoryxPackageHelper)
+#get_target_property(ICEORYX_CXX_STANDARD iceoryx_posh::iceoryx_posh CXX_STANDARD)
+#include(IceoryxPlatform)
+#include(IceoryxPackageHelper)
 
-iox_add_executable(
-    TARGET  iox-lpb-cli
-    FILES   ./iox_lpb_cli.cpp
-    LIBS    iceoryx_posh::iceoryx_posh
-)
+#iox_add_executable(
+#    TARGET  iox-lpb-cli
+#    FILES   ./iox_lpb_cli.cpp
+#    LIBS    iceoryx_posh::iceoryx_posh
+#)
 
-iox_add_executable(
-    TARGET  iox-lpb-backbone
-    FILES   ./iox_lpb_backbone.cpp
-    LIBS    iceoryx_posh::iceoryx_posh
-)
+#iox_add_executable(
+#    TARGET  iox-lpb-backbone
+#    FILES   ./iox_lpb_backbone.cpp
+#    LIBS    iceoryx_posh::iceoryx_posh
+#)
 
-target_compile_features(iox-lpb-cli PRIVATE cxx_std_17)
+add_executable(iox-lpb-backbone iox_lpb_backbone.cpp)
 target_compile_features(iox-lpb-backbone PRIVATE cxx_std_17)
+
+#target_compile_features(iox-lpb-cli PRIVATE cxx_std_17)
+#target_compile_features(iox-lpb-backbone PRIVATE cxx_std_17)
 
 add_subdirectory(lib)
 link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/include)
@@ -67,6 +70,6 @@ target_link_libraries(iox-lpb-backbone
     lib
     )
 
-target_link_libraries(iox-lpb-cli 
-lib
-)
+#target_link_libraries(iox-lpb-cli 
+#lib
+#)
