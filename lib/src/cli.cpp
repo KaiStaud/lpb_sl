@@ -1,17 +1,17 @@
 /**
  * @file cli.cpp
- * @author Kai Staud 
+ * @author Kai Staud
  * @brief Module to dynamicaly debug LPBs ECU Host
  * @version 0.1
  * @date 2022-06-04
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include <../include/cli.hpp>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
-
+#include <variant>
 cli::cli()
 {
     set_config("/usr/bin/lpb/.config");
@@ -37,6 +37,11 @@ void cli::init_user_shortcuts()
 
     std::vector<std::string> coordinates;
     move_tcp->add_option("files", coordinates, "Coordinates");
+    create_star->callback([&]() {});
+    create_constellation->callback([&]() {});
+    create_track->callback([&]() {});
+    define_config->callback([&]() {});
+    shutdown->callback([&]() {});
 
     move_tcp->callback([&]()
                        {
@@ -59,6 +64,12 @@ void cli::init_dev_shortcuts()
     auto delete_errors = app.add_subcommand("delete-errors", "Delete errors");
     auto no_crypt = app.add_subcommand("no-crypt", "Run without encrypted comms");
     auto watch_pdo = app.add_subcommand("pdo", "Watch PDOs while running");
+    // Callbacks:
+    clean->callback([&]() {});
+    reinit->callback([&]() {});
+    delete_errors->callback([&]() {});
+    no_crypt->callback([&]() {});
+    watch_pdo->callback([&]() {});
 }
 
 void cli::set_config(std::string new_config)

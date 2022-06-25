@@ -33,10 +33,7 @@ using nlohmann::json;
 int main(int argc, char **argv)
 {
       Datahandling::Storage st("Test");
-  st.insert_constellation("test2");
-
-  cli debug_interface;
-  debug_interface.execute(argc, argv);
+//  st.insert_constellation("test2");
 std::string s;
 
    auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.log", 2, 30);

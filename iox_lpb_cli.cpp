@@ -22,6 +22,9 @@
 
 #include "lib/include/cli.hpp"
 
+// Thread receives Messages,which are send to client via IPC
+
+
 int main(int argc, char **argv)
 {
     cli debug_interface;

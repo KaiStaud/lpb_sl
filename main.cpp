@@ -17,6 +17,8 @@ int main(int argc, char **argv)
 {
   Datahandling::Storage st("Test");
   st.insert_constellation("test2");
+  st.insert_constellation("test3");
+  st.insert_constellation("test4");
 
   cli debug_interface;
   debug_interface.execute(argc, argv);

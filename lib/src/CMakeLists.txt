@@ -1,3 +1,4 @@
+set (CMAKE_CXX_STANDARD 20)
 
 include_directories( /home/kai/iceoryx_test/lib/include
 /home/kai/iceoryx_test/external/fmt
