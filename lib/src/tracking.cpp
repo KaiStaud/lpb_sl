@@ -18,34 +18,34 @@ TaskHandler::TaskHandler()
 {
 }
 
-void TaskHandler::pop_constellation()
+void TaskHandler::pop_track()
 {
-    auto popped_cst = cst_buffer.front();
-    cst_buffer.pop();
+    auto popped_track = track_buffer.front();
+    track_buffer.pop();
 
     // Extract all starts from constellation, and push them into stars:
-    while (popped_cst.stars.size() > 0)
+    while (popped_track.stars.size() > 0)
     {
-        star_buffer.push(popped_cst.stars.front());
-        popped_cst.stars.erase(popped_cst.stars.begin());
+        cst_buffer.push(popped_track.stars.front());
+        popped_track.stars.erase(popped_track.stars.begin());
     }
 }
 
-void TaskHandler::pop_stars()
+void TaskHandler::pop_constellation()
 {
     // star poppen und als neues ziel setzen
-    auto new_destination_star = star_buffer.front();
-    star_buffer.pop();
+    auto new_constellation = cst_buffer.front();
+    cst_buffer.pop();
     fmt::print("popped star from queue and set it ...\r\n");
-    fmt::print("{} {} {} {} {}\n", new_destination_star.arm0,
-               new_destination_star.arm1,
-               new_destination_star.arm2,
-               new_destination_star.arm3,
-               new_destination_star.tcp);
+    fmt::print("{} {} {} {} {}\n", new_constellation.arm0,
+               new_constellation.arm1,
+               new_constellation.arm2,
+               new_constellation.arm3,
+               new_constellation.tcp);
 }
 
-bool TaskHandler::add_constellation(constellation cst)
+bool TaskHandler::add_track(track cst)
 {
-    cst_buffer.push(cst);
+    track_buffer.push(cst);
     return true;
 }

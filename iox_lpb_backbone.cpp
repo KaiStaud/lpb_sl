@@ -30,7 +30,7 @@ using nlohmann::json;
 
 #include <iostream>
 
-int main(int argc, char **argv)
+int main()
 {
       Datahandling::Storage st("Test");
 //  st.insert_constellation("test2");
@@ -43,22 +43,22 @@ std::string s;
    auto time_p = std::chrono::system_clock::now();
    fmt::print("Running Version {}.{}.{} @ {}\r\n", 0, 0, 0, timeToString(time_p));
 
-   star st1 = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 0, 1}, {2, 3, 4}};
-   star st2 = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 0, 1}, {2, 3, 4}};
+   constellation constellation1 = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 0, 1}, {2, 3, 4}};
+   constellation constellation2 = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 0, 1}, {2, 3, 4}};
 
-   constellation cst;
-   cst.stars.push_back(st1);
-   cst.stars.push_back(st2);
+   track track1;
+track1.stars.push_back(constellation1);
+   track1.stars.push_back(constellation2);
 // Tracks buffern
 
    TaskHandler tsk;
-   tsk.add_constellation(cst);
+   tsk.add_track(track1);
+   tsk.pop_track();
    tsk.pop_constellation();
-   tsk.pop_stars();
 
-   cst.timestamps.push_back(1);
-   cst.timestamps.push_back(2);
-   json j = cst;
+   track1.timestamps.push_back(1);
+   track1.timestamps.push_back(2);
+   json j = track1;
 
    Router router;
 

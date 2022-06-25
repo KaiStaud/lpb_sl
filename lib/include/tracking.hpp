@@ -16,7 +16,7 @@
 #include <vector>
 #include <etl/circular_buffer.h>
 #include <optional>
-struct star
+struct constellation
 {
     std::int32_t arm0[3];
     std::int32_t arm1[3];
@@ -25,9 +25,9 @@ struct star
     std::int32_t tcp[3];
 } ;
 
-struct constellation
+struct track
 {
-    std::vector<star> stars;
+    std::vector<constellation> stars;
     std::vector<std::int32_t> timestamps;
 } ;
 
@@ -37,17 +37,17 @@ namespace tracking
     class TaskHandler
     {
     private:
+        etl::circular_buffer<track, 10> track_buffer;
         etl::circular_buffer<constellation, 10> cst_buffer;
-        etl::circular_buffer<star, 10> star_buffer;
 
     public:
         TaskHandler(/* args */);
         ~TaskHandler()
         {
         }
-        bool add_constellation(constellation cst);
-        void pop_stars();
+        bool add_track(track cst);
         void pop_constellation();
+        void pop_track();
     };
 
 }

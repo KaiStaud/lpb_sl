@@ -43,9 +43,17 @@ public:
     int execute(int argc, char **argv);
 
     /* Helpers for CLI User Guidance*/
-    std::variant<std::string, ParsingErrors> QueryStar();
-    std::variant<std::string, ParsingErrors> QueryConstellation();
-    std::variant<std::string, ParsingErrors> QueryTrack();
+    std::variant<std::string, ParsingErrors> QueryStar(){
+        
+    }
+
+    std::variant<std::string, ParsingErrors> QueryConstellation(){
+
+    }
+
+    std::variant<std::string, ParsingErrors> QueryTrack(){
+
+    }
 
 private:
     CLI::App app{"cli to control robotic arm"};

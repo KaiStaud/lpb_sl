@@ -10,7 +10,7 @@
  */
 
 #include "../include/serialization.hpp"
-void to_json(json &j, const star &s)
+void to_json(json &j, const constellation &s)
 {
     j = json{
         //{"name", s.name},
@@ -23,7 +23,7 @@ void to_json(json &j, const star &s)
     };
 }
 
-void from_json(const json &j, star &s)
+void from_json(const json &j, constellation &s)
 {
     // j.at("name").get_to(s.name);
     j.at("arm0").get_to(s.arm0);
@@ -34,7 +34,7 @@ void from_json(const json &j, star &s)
     // j.at("id").get_to(s.id);
 }
 
-void to_json(json &j, const constellation &s)
+void to_json(json &j, const track &s)
 {
     j = json{
         {"stars", {s.stars}},
@@ -44,7 +44,7 @@ void to_json(json &j, const constellation &s)
     };
 }
 
-void from_json(const json &j, constellation &s)
+void from_json(const json &j, track &s)
 {
     j.at("stars").get_to(s.stars);
     j.at("timestamps").get_to(s.timestamps);
