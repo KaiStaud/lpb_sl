@@ -334,6 +334,9 @@ CPACK_BINARY_TXZ:BOOL=OFF
 //Enable to build TZ packages
 CPACK_BINARY_TZ:BOOL=ON
 
+//Path to a program.
+CPPCHECK_EXECUTABLE:FILEPATH=CPPCHECK_EXECUTABLE-NOTFOUND
+
 //ETL version determined with git describe
 ETL_VERSION:STRING=20.28.0
 
@@ -426,8 +429,23 @@ JSON_MultipleHeaders:BOOL=ON
 //Include as system headers (skip for clang-tidy).
 JSON_SystemInclude:BOOL=OFF
 
+//Build magic_enum examples
+MAGIC_ENUM_OPT_BUILD_EXAMPLES:BOOL=OFF
+
+//Build and perform magic_enum tests
+MAGIC_ENUM_OPT_BUILD_TESTS:BOOL=OFF
+
+//Enable support for non-ASCII enumeration identifier
+MAGIC_ENUM_OPT_ENABLE_NONASCII:BOOL=OFF
+
+//Generate and install magic_enum target
+MAGIC_ENUM_OPT_INSTALL:BOOL=OFF
+
 //No STL
 NO_STL:BOOL=OFF
+
+//Path to a program.
+PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python
 
 //Build all artifacts
 SPDLOG_BUILD_ALL:BOOL=OFF
@@ -506,6 +524,81 @@ SPDLOG_WCHAR_FILENAMES:BOOL=OFF
 //non supported option
 SPDLOG_WCHAR_SUPPORT:BOOL=OFF
 
+//Build examples.
+SQLITECPP_BUILD_EXAMPLES:BOOL=OFF
+
+//Build and run tests.
+SQLITECPP_BUILD_TESTS:BOOL=OFF
+
+//Include config & script files.
+SQLITECPP_INCLUDE_SCRIPT:BOOL=ON
+
+//Add the internal SQLite3 source to the project.
+SQLITECPP_INTERNAL_SQLITE:BOOL=ON
+
+//Run cppcheck C++ static analysis tool.
+SQLITECPP_RUN_CPPCHECK:BOOL=ON
+
+//Run cpplint.py tool for Google C++ StyleGuide.
+SQLITECPP_RUN_CPPLINT:BOOL=ON
+
+//Run Doxygen C++ documentation tool.
+SQLITECPP_RUN_DOXYGEN:BOOL=OFF
+
+//Use Address Sanitizer.
+SQLITECPP_USE_ASAN:BOOL=OFF
+
+//USE GCov instrumentation.
+SQLITECPP_USE_GCOV:BOOL=OFF
+
+//USE Stack Protection hardening.
+SQLITECPP_USE_STACK_PROTECTION:BOOL=ON
+
+//Use MSVC static runtime (default for internal googletest).
+SQLITECPP_USE_STATIC_RUNTIME:BOOL=ON
+
+//Enable the user definition of a assertion_failed() handler.
+SQLITE_ENABLE_ASSERT_HANDLER:BOOL=OFF
+
+//Enable Column::getColumnOriginName(). Require support from sqlite3
+// library.
+SQLITE_ENABLE_COLUMN_METADATA:BOOL=ON
+
+//Enable JSON1 extension when building internal sqlite3 library.
+SQLITE_ENABLE_JSON1:BOOL=ON
+
+//Enable database encryption API. Not available in the public release
+// of SQLite.
+SQLITE_HAS_CODEC:BOOL=OFF
+
+//Enable omit load extension
+SQLITE_OMIT_LOAD_EXTENSION:BOOL=OFF
+
+//Fallback to forward declaration of legacy struct sqlite3_value
+// (pre SQLite 3.19)
+SQLITE_USE_LEGACY_STRUCT:BOOL=OFF
+
+//Value Computed by CMake
+SQLiteCpp_BINARY_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/SQLiteCpp
+
+//Value Computed by CMake
+SQLiteCpp_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+SQLiteCpp_LIB_DEPENDS:STATIC=general;sqlite3;general;dl;
+
+//Value Computed by CMake
+SQLiteCpp_SOURCE_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/SQLiteCpp
+
+//Value Computed by CMake
+cppgpio_BINARY_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/CppGPIO
+
+//Value Computed by CMake
+cppgpio_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+cppgpio_SOURCE_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/CppGPIO
+
 //Value Computed by CMake
 etl_BINARY_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/etl
 
@@ -523,6 +616,15 @@ example_icehello_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 example_icehello_SOURCE_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2
+
+//Value Computed by CMake
+magic_enum_BINARY_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/magic_enum
+
+//Value Computed by CMake
+magic_enum_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+magic_enum_SOURCE_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/magic_enum
 
 //Value Computed by CMake
 nlohmann_json_BINARY_DIR:STATIC=/home/kai/projects/sw/armhf/lpbsl2/external/json
@@ -746,11 +848,15 @@ CPACK_BINARY_TGZ-ADVANCED:INTERNAL=1
 CPACK_BINARY_TXZ-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CPACK_BINARY_TZ
 CPACK_BINARY_TZ-ADVANCED:INTERNAL=1
+//Details about finding PythonInterp
+FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python][v2.7.18()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 NLOHMANN_JSON_CONFIG_INSTALL_DIR:INTERNAL=lib/cmake/nlohmann_json
+//ADVANCED property for variable: PYTHON_EXECUTABLE
+PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 //Test has_std_20_flag

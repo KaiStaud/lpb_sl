@@ -9,12 +9,14 @@
  *
  */
 #include <../include/cli.hpp>
-#include <fmt/core.h>
-#include <fmt/ranges.h>
+#include "fmt/core.h"
+#include "fmt/ranges.h"
 #include <variant>
+//#include "CLI11/CLI.hpp"
+
 cli::cli()
 {
-    set_config("/usr/bin/lpb/.config");
+//    set_config("/usr/bin/lpb/.config");
     parse_config();
     init_dev_shortcuts();
     init_user_shortcuts();
@@ -22,7 +24,7 @@ cli::cli()
 
 void cli::init_user_shortcuts()
 {
-    app.require_subcommand(1);
+/*    app.require_subcommand(1);
 
     auto move_tcp = app.add_subcommand("tcp", "Move tcp to passed vector");
     auto create_star = app.add_subcommand("create-start", "Create a new star");
@@ -55,11 +57,11 @@ void cli::init_user_shortcuts()
     } else {
             fmt::print("Spezified coordinates {}",coordinates);
     } });
-}
+*/}
 
 void cli::init_dev_shortcuts()
 {
-    auto clean = app.add_subcommand("clean", "Clean db and config");
+/*    auto clean = app.add_subcommand("clean", "Clean db and config");
     auto reinit = app.add_subcommand("reinit", "Re-Initialize system");
     auto delete_errors = app.add_subcommand("delete-errors", "Delete errors");
     auto no_crypt = app.add_subcommand("no-crypt", "Run without encrypted comms");
@@ -70,11 +72,11 @@ void cli::init_dev_shortcuts()
     delete_errors->callback([&]() {});
     no_crypt->callback([&]() {});
     watch_pdo->callback([&]() {});
-}
+*/}
 
 void cli::set_config(std::string new_config)
 {
-    app.set_config("--config")->transform(CLI::FileOnDefaultPath("/usr/bin/lpb_sl/.config"));
+//    app.set_config("--config")->transform(CLI::FileOnDefaultPath("/usr/bin/lpb_sl/.config"));
 }
 void cli::parse_config()
 {
@@ -86,7 +88,7 @@ void cli::hot_reload_config()
 
 int cli::execute(int argc, char **argv)
 {
-    CLI11_PARSE(app, argc, argv);
+//    CLI11_PARSE(app, argc, argv);
 }
 
 void cli::create_star_from_cli()

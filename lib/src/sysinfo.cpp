@@ -12,7 +12,7 @@
 #include <../include/sysinfo.hpp>
 #include <sys/time.h>
 #include <ctime>
-#include <fmt/core.h>
+#include "fmt/core.h"
 
 std::string timeToString(std::chrono::system_clock::time_point &t)
 {

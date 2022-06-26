@@ -52,7 +52,6 @@ link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/src)
 add_subdirectory(external/CLI11)
 add_subdirectory(external/fmt)
 add_subdirectory(external/json)
-add_subdirectory(external/spdlog)
 add_subdirectory(external/etl)
 add_subdirectory(external/SQLiteCpp)
 add_subdirectory(external/CppGPIO)
@@ -62,7 +61,6 @@ add_subdirectory(external/magic_enum)
 target_include_directories(iox-lpb-backbone
 PUBLIC external/fmt
 PUBLIC external/json
-PUBLIC external/spdlog
 PUBLIC external/CLI11
 PUBLIC lib/include)
 
