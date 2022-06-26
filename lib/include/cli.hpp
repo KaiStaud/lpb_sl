@@ -9,7 +9,6 @@
  *
  */
 
-#include "CLI11/CLI.hpp"
 #include <string>
 #include <variant>
 #include "fmt/core.h"
@@ -78,7 +77,7 @@ public:
     }
 
 private:
-    CLI::App app{"cli to control robotic arm"};
+    // CLI::App app{"cli to control robotic arm"};
     // Create default config, if not exists
     void create_defconfig();
     // create star
