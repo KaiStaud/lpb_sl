@@ -46,31 +46,35 @@ public:
     int execute(int argc, char **argv);
 
     /* Helpers for CLI User Guidance*/
-    std::variant<std::string, ParsingErrors> QueryStar()
+    std::variant<star, ParsingErrors> QueryStar()
     {
         star st;
-        try{
+        //try{
         fmt::print("Enter x Coordinate:");
         std::cin >> st.xyz[0];
         fmt::print("Enter y Coordinate:");
         std::cin >> st.xyz[1];
         fmt::print("Enter z Coordinate:");
         std::cin >> st.xyz[2];
-        return "";
-        }
-        catch(const std::exception ex){
-            return ParsingErrors::incorrect_input;
-        }
+        return st;
+        //}
+        //catch(const std::exception ex){
+        //    return ParsingErrors::incorrect_input;
+        //}
     }
 
-    std::variant<std::string, ParsingErrors> QueryConstellation(std::uint8_t num_stars)
+    std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars)
     {
+        constellation cst;
         //std::string constellation;
-        //for(int i=0;i<num_stars;i++)
+        for(int i=0;i<num_stars;i++);
+        return cst;
     }
 
-    std::variant<std::string, ParsingErrors> QueryTrack()
+    std::variant<track, ParsingErrors> QueryTrack()
     {
+        track t;
+        return t;
     }
 
 private:
