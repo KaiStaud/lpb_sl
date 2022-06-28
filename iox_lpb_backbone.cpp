@@ -75,6 +75,8 @@ track1.stars.push_back(constellation1);
   etl::send_message(router, Message4());
 
  router.process_queue();
+ cli cl;
+cl.QueryConstellation(2);
     //! [initialize runtime]
     // constexpr char APP_NAME[] = "iox-cpp-subscriber-helloworld";
     // iox::runtime::PoshRuntime::initRuntime(APP_NAME);

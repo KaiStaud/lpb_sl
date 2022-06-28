@@ -14,6 +14,8 @@
 #include "fmt/core.h"
 #include "tracking.hpp"
 #include "serialization.hpp"
+#include <iostream>
+#include <vector>
 
 enum class ParsingErrors
 {
@@ -22,68 +24,86 @@ enum class ParsingErrors
     incorrect_input = 2,
     incorrect_format = 3,
 };
-
+/**
+ * @brief Abstraction class for cli functionality
+ *
+ */
 class cli
 {
 public:
     cli();
     // Setup user shortcuts
-    void init_user_shortcuts();
-    // Setup developer-shortcuts
-    // Shortcuts are call cli options during operation (after first parse)
-    void init_dev_shortcuts();
-    // set config-file: Configurateion is in ini-format (cli11 defautl)
-    // if not set otherwise, the default configuration file is located under /usr/local/bin/lpb/.config
-    void set_config(std::string new_config);
-    // read in config-file
-    void parse_config();
-    // update config-file (if config changed during runtime)
-    void hot_reload_config();
+    void init_user_shortcuts();              /**< simple user interface functions  */
+    void init_dev_shortcuts();               /**< Extended functions for rt-debugging */
+    void set_config(std::string new_config); /**< Optional ini-file configuration, default: /usr/local/bin/.config*/
+    void parse_config();                     /*<< Parse configuration with hot-reload */
+    void hot_reload_config();                /*< check if file changed */
     /* Options */
 
-    // Run the cli parser (again)
-    int execute(int argc, char **argv);
+    int execute(int argc, char **argv); /**< Run the cli parser (again) */
 
-    /* Helpers for CLI User Guidance*/
-    std::variant<star, ParsingErrors> QueryStar()
+    std::variant<star, ParsingErrors> QueryStar() /**< Read in star from command line */
     {
+        const std::string fmt_inputs[3] = {"x", "y", "z"};
+        std::string num_as_string;
         star st;
-        //try{
-        fmt::print("Enter x Coordinate:");
-        std::cin >> st.xyz[0];
-        fmt::print("Enter y Coordinate:");
-        std::cin >> st.xyz[1];
-        fmt::print("Enter z Coordinate:");
-        std::cin >> st.xyz[2];
+        for (int i = 0; i < 3; i++)
+        {
+            fmt::print("Enter {} Coordinate: ", fmt_inputs[i]);
+            getline(std::cin, num_as_string);
+            try
+            {
+                st.xyz[i] = std::stoi(num_as_string);
+            }
+            catch (std::invalid_argument)
+            {
+                return ParsingErrors::incorrect_input;
+            }
+        }
         return st;
-        //}
-        //catch(const std::exception ex){
-        //    return ParsingErrors::incorrect_input;
-        //}
     }
 
-    std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars)
+    std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3) /**< Read in complete constellation */
     {
         constellation cst;
-        //std::string constellation;
-        for(int i=0;i<num_stars;i++);
+        tconstellation tcst;
+        try
+        {
+            for (int i = 0; i < num_stars; i++)
+            {
+                fmt::print("Enter Coordinates for star no {}: ", i);
+                auto what = QueryStar();
+                auto res = std::get<star>(what);
+                tcst.tstars.push_back(res);
+            }
+        }
+        catch (std::bad_variant_access const &ex)
+        {
+            fmt::print("Unable to parse Constellation {}", ex.what());
+        }
         return cst;
     }
 
-    std::variant<track, ParsingErrors> QueryTrack()
+    std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1) /** < Create complete Track from cli */
     {
         track t;
+        try
+        {
+            for (int i = 0; i < num_constellations; i++)
+            {
+                fmt::print("Enter Constellation no {}: ", i);
+                auto res = QueryConstellation();
+                auto cst = std::get<constellation>(res);
+                t.stars.push_back(cst);
+            }
+        }
+        catch (std::bad_variant_access const &ex)
+        {
+            fmt::print("Unable to parse Constellation {}", ex.what());
+        }
         return t;
     }
 
 private:
-    // CLI::App app{"cli to control robotic arm"};
-    // Create default config, if not exists
-    void create_defconfig();
-    // create star
-    void create_star_from_cli();
-    // create constellation
-    void create_constellation_from_cli();
-    // create track from constellations
-    void create_track_from_cli();
+    void create_defconfig(); /**< Create default config, if not exists */
 };

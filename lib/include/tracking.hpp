@@ -25,6 +25,12 @@ struct star{
 std::int32_t xyz[3];
 };
 
+struct tconstellation
+{
+    std::vector<star> tstars;
+
+} ;
+
 /**
  * @brief Structure encapsulation several stars
  * 
