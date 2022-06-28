@@ -28,3 +28,6 @@
 [submodule "external/magic_enum"]
 	path = external/magic_enum
 	url = https://github.com/Neargye/magic_enum
+[submodule "external/icecream-cpp"]
+	path = external/icecream-cpp
+	url = https://github.com/renatoGarcia/icecream-cpp
