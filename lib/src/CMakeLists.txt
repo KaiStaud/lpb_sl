@@ -26,4 +26,5 @@ target_link_libraries(lib
  SQLiteCpp
 sqlite3
 pthread
-dl) 
+dl
+) 

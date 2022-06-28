@@ -55,7 +55,7 @@ public:
             {
                 st.xyz[i] = std::stoi(num_as_string);
             }
-            catch (std::invalid_argument)
+            catch (std::invalid_argument) // Char or string?
             {
                 return ParsingErrors::incorrect_input;
             }
@@ -73,11 +73,11 @@ public:
             {
                 fmt::print("Enter Coordinates for star no {}: ", i);
                 auto what = QueryStar();
-                auto res = std::get<star>(what);
+                auto res = std::get<star>(what); // Throws if error was returned
                 tcst.tstars.push_back(res);
             }
         }
-        catch (std::bad_variant_access const &ex)
+        catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
         {
             fmt::print("Unable to parse Constellation {}", ex.what());
         }
@@ -93,11 +93,11 @@ public:
             {
                 fmt::print("Enter Constellation no {}: ", i);
                 auto res = QueryConstellation();
-                auto cst = std::get<constellation>(res);
+                auto cst = std::get<constellation>(res);// Throws if error was returned
                 t.stars.push_back(cst);
             }
         }
-        catch (std::bad_variant_access const &ex)
+        catch (std::bad_variant_access const &ex)// Catch previously thrown wrong-type errors
         {
             fmt::print("Unable to parse Constellation {}", ex.what());
         }

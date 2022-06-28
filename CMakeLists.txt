@@ -56,18 +56,21 @@ add_subdirectory(external/etl)
 add_subdirectory(external/SQLiteCpp)
 add_subdirectory(external/CppGPIO)
 add_subdirectory(external/magic_enum)
+add_subdirectory(external/spdlog)
+
+
 
 
 target_include_directories(iox-lpb-backbone
 PUBLIC external/fmt
 PUBLIC external/json
 PUBLIC external/CLI11
+PUBLIC external/spdlog
 PUBLIC lib/include)
 
 target_link_libraries(iox-lpb-backbone 
-    lib
+lib
     )
-
 #target_link_libraries(iox-lpb-cli 
 #lib
 #)
