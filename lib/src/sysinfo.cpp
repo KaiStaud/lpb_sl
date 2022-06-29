@@ -9,7 +9,7 @@
  * 
  */
 
-#include <../include/sysinfo.hpp>
+#include "../include/sysinfo.hpp"
 #include <sys/time.h>
 #include <ctime>
 #include <fmt/core.h>

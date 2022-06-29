@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2022
  *
  */
-#include <../include/cli.hpp>
-#include <../include/tracking.hpp>
+#include "../include/cli.hpp"
+#include "../include/tracking.hpp"
 
 #include <fmt/core.h>
 #include <fmt/ranges.h>
@@ -18,10 +18,10 @@
 
 enum class ParsingErrors
 {
-    no_error = 0,
-    value_out_of_bound = 1,
-    incorrect_input = 2,
-    incorrect_format = 3,
+     no_error = 0,
+     value_out_of_bound = 1,
+     incorrect_input = 2,
+     incorrect_format = 3,
 };
 
 CLI::App app{"cli to control robotic arm"};
@@ -54,12 +54,9 @@ void cli::init_user_shortcuts()
      auto define_config = app.add_subcommand("defconfig", "Use different defconfig");
      auto shutdown = app.add_subcommand("shutdown", "Shutdown system,return to home");
 
-     create_star->callback([&]()
-                           { try_create_star(); });
-     create_constellation->callback([&]()
-                                    { try_create_constellation(); });
-     create_track->callback([&]()
-                            { try_create_track(); });
+     create_star->callback([&]() {});
+     create_constellation->callback([&]() {});
+     create_track->callback([&]() {});
      define_config->callback([&]() {});
      shutdown->callback([&]() {});
 }
@@ -72,8 +69,7 @@ void cli::init_dev_shortcuts()
      auto no_crypt = app.add_subcommand("no-crypt", "Run without encrypted comms");
      auto watch_pdo = app.add_subcommand("pdo", "Watch PDOs while running");
      // Callbacks:
-     clean->callback([&]()
-                     { });
+     clean->callback([&]() {});
      reinit->callback([&]() {});
      delete_errors->callback([&]() {});
      no_crypt->callback([&]() {});
@@ -98,64 +94,64 @@ int cli::execute(int argc, char **argv)
      return 0;
 }
 
-std::variant<star, ParsingErrors> QueryStar() /**< Read in star from command line */
-{
-     const std::string fmt_inputs[3] = {"x", "y", "z"};
-     std::string num_as_string;
-     tstar st;
-     for (int i = 0; i < 3; i++)
-     {
-          fmt::print("Enter {} Coordinate: ", fmt_inputs[i]);
-          getline(std::cin, num_as_string);
-          try
-          {
-               st.xyz[i] = std::stoi(num_as_string);
-          }
-          catch (std::invalid_argument) // Char or string?
-          {
-               return ParsingErrors::incorrect_input;
-          }
-     }
-     return st;
-}
+// std::variant<star, ParsingErrors> QueryStar() /**< Read in star from command line */
+// {
+//      const std::string fmt_inputs[3] = {"x", "y", "z"};
+//      std::string num_as_string;
+//      tstar st;
+//      for (int i = 0; i < 3; i++)
+//      {
+//           fmt::print("Enter {} Coordinate: ", fmt_inputs[i]);
+//           getline(std::cin, num_as_string);
+//           try
+//           {
+//                st.xyz[i] = std::stoi(num_as_string);
+//           }
+//           catch (std::invalid_argument) // Char or string?
+//           {
+//                return ParsingErrors::incorrect_input;
+//           }
+//      }
+//      return st;
+// }
 
-std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3) /**< Read in complete constellation */
-{
-     constellation cst;
-     tconstellation tcst;
-     try
-     {
-          for (int i = 0; i < num_stars; i++)
-          {
-               fmt::print("Enter Coordinates for star no {}: ", i);
-               auto what = QueryStar();
-               auto res = std::get<star>(what); // Throws if error was returned
-               tcst.tstars.push_back(res);
-          }
-     }
-     catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
-     {
-          fmt::print("Unable to parse Constellation {}", ex.what());
-     }
-     return cst;
-}
+// std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3) /**< Read in complete constellation */
+// {
+//      constellation cst;
+//      tconstellation tcst;
+//      try
+//      {
+//           for (int i = 0; i < num_stars; i++)
+//           {
+//                fmt::print("Enter Coordinates for star no {}: ", i);
+//                auto what = QueryStar();
+//                auto res = std::get<star>(what); // Throws if error was returned
+//                tcst.tstars.push_back(res);
+//           }
+//      }
+//      catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
+//      {
+//           fmt::print("Unable to parse Constellation {}", ex.what());
+//      }
+//      return cst;
+// }
 
-std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1) /** < Create complete Track from cli */
-{
-     track t;
-     try
-     {
-          for (int i = 0; i < num_constellations; i++)
-          {
-               fmt::print("Enter Constellation no {}: ", i);
-               auto res = QueryConstellation();
-               auto cst = std::get<constellation>(res); // Throws if error was returned
-               t.stars.push_back(cst);
-          }
-     }
-     catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
-     {
-          fmt::print("Unable to parse Constellation {}", ex.what());
-     }
-     return t;
-}
+// std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1) /** < Create complete Track from cli */
+// {
+//      track t;
+//      try
+//      {
+//           for (int i = 0; i < num_constellations; i++)
+//           {
+//                fmt::print("Enter Constellation no {}: ", i);
+//                auto res = QueryConstellation();
+//                auto cst = std::get<constellation>(res); // Throws if error was returned
+//                t.stars.push_back(cst);
+//           }
+//      }
+//      catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
+//      {
+//           fmt::print("Unable to parse Constellation {}", ex.what());
+//      }
+//      return t;
+// }

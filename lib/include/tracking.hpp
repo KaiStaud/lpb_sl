@@ -16,7 +16,20 @@
 #include <vector>
 #include <etl/circular_buffer.h>
 #include <optional>
+// struct star
+// {
+//     std::int32_t arm0[3];
+//     std::int32_t arm1[3];
+//     std::int32_t arm2[3];
+//     std::int32_t arm3[3];
+//     std::int32_t tcp[3];
+// } ;
 
+// struct constellation
+// {
+//     std::vector<star> stars;
+//     std::vector<std::int32_t> timestamps;
+// } ;
 /**
  * @brief Abstracts an array into an new datatype
  * 
@@ -27,7 +40,7 @@ std::int32_t xyz[3];
 
 struct tconstellation
 {
-    std::vector<star> tstars;
+    std::vector<tstar> tstars;
 
 } ;
 

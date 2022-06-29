@@ -49,7 +49,7 @@ private:
 //     std::variant<star, ParsingErrors> QueryStar(); /**< Read in star from command line */
 //     std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3); /**< Read in complete constellation */
 //     std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1); /** < Create complete Track from cli */
-   star query_star(); /**< Read in star from command line */
+   tstar query_star(); /**< Read in star from command line */
    constellation query_constellation(std::uint8_t num_stars = 3); /**< Read in complete constellation */
    track query_track(std::uint8_t num_constellations = 1); /** < Create complete Track from cli */
 };
