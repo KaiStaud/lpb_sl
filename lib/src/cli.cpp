@@ -33,15 +33,6 @@ cli::cli()
      init_dev_shortcuts();
      init_user_shortcuts();
 }
-void try_create_star(){
-
-};
-void try_create_constellation(){
-
-};
-void try_create_track(){
-
-};
 
 void cli::init_user_shortcuts()
 {
@@ -54,13 +45,23 @@ void cli::init_user_shortcuts()
      auto define_config = app.add_subcommand("defconfig", "Use different defconfig");
      auto shutdown = app.add_subcommand("shutdown", "Shutdown system,return to home");
 
-     create_star->callback([&]() {});
-     create_constellation->callback([&]() {});
+     create_star->callback([&]() {try_create_star();});
+     create_constellation->callback([&]() {try_create_constellation();});
      create_track->callback([&]() {});
      define_config->callback([&]() {});
      shutdown->callback([&]() {});
 }
+void cli::try_create_star(){
+     query_star();
+}
 
+void cli::try_create_constellation(){
+     query_constellation();
+}
+
+void cli::try_create_track(){
+     query_track();
+}
 void cli::init_dev_shortcuts()
 {
      auto clean = app.add_subcommand("clean", "Clean db and config");
@@ -94,7 +95,7 @@ int cli::execute(int argc, char **argv)
      return 0;
 }
 
-std::variant<tstar, ParsingErrors> cli::QueryStar() /**< Read in star from command line */
+std::variant<tstar, ParsingErrors> cli::query_star() /**< Read in star from command line */
 {
      const std::string fmt_inputs[3] = {"x", "y", "z"};
      std::string num_as_string;
@@ -115,7 +116,7 @@ std::variant<tstar, ParsingErrors> cli::QueryStar() /**< Read in star from comma
      return st;
 }
 
-std::variant<constellation, ParsingErrors> cli::QueryConstellation(std::uint8_t num_stars) /**< Read in complete constellation */
+std::variant<constellation, ParsingErrors> cli::query_constellation(std::uint8_t num_stars) /**< Read in complete constellation */
 {
      constellation cst;
      tconstellation tcst;
@@ -124,7 +125,7 @@ std::variant<constellation, ParsingErrors> cli::QueryConstellation(std::uint8_t 
           for (int i = 0; i < num_stars; i++)
           {
                fmt::print("Enter Coordinates for star no {}: ", i);
-               auto what = QueryStar();
+               auto what = query_star();
                auto res = std::get<tstar>(what); // Throws if error was returned
                tcst.tstars.push_back(res);
           }
@@ -136,7 +137,7 @@ std::variant<constellation, ParsingErrors> cli::QueryConstellation(std::uint8_t 
      return cst;
 }
 
-std::variant<track, ParsingErrors> cli::QueryTrack(std::uint8_t num_constellations) /** < Create complete Track from cli */
+std::variant<track, ParsingErrors> cli::query_track(std::uint8_t num_constellations) /** < Create complete Track from cli */
 {
      track t;
      try
@@ -144,7 +145,7 @@ std::variant<track, ParsingErrors> cli::QueryTrack(std::uint8_t num_constellatio
           for (int i = 0; i < num_constellations; i++)
           {
                fmt::print("Enter Constellation no {}: ", i);
-               auto res = QueryConstellation();
+               auto res = query_constellation();
                auto cst = std::get<constellation>(res); // Throws if error was returned
                t.stars.push_back(cst);
           }
