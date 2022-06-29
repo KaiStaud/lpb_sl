@@ -17,13 +17,8 @@
 #include <iostream>
 #include <vector>
 
-enum class ParsingErrors
-{
-    no_error = 0,
-    value_out_of_bound = 1,
-    incorrect_input = 2,
-    incorrect_format = 3,
-};
+using namespace tracking;
+
 /**
  * @brief Abstraction class for cli functionality
  *
@@ -39,71 +34,23 @@ public:
     void parse_config();                     /*<< Parse configuration with hot-reload */
     void hot_reload_config();                /*< check if file changed */
     /* Options */
-
     int execute(int argc, char **argv); /**< Run the cli parser (again) */
-
-    std::variant<star, ParsingErrors> QueryStar() /**< Read in star from command line */
-    {
-        const std::string fmt_inputs[3] = {"x", "y", "z"};
-        std::string num_as_string;
-        star st;
-        for (int i = 0; i < 3; i++)
-        {
-            fmt::print("Enter {} Coordinate: ", fmt_inputs[i]);
-            getline(std::cin, num_as_string);
-            try
-            {
-                st.xyz[i] = std::stoi(num_as_string);
-            }
-            catch (std::invalid_argument) // Char or string?
-            {
-                return ParsingErrors::incorrect_input;
-            }
-        }
-        return st;
-    }
-
-    std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3) /**< Read in complete constellation */
-    {
-        constellation cst;
-        tconstellation tcst;
-        try
-        {
-            for (int i = 0; i < num_stars; i++)
-            {
-                fmt::print("Enter Coordinates for star no {}: ", i);
-                auto what = QueryStar();
-                auto res = std::get<star>(what); // Throws if error was returned
-                tcst.tstars.push_back(res);
-            }
-        }
-        catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
-        {
-            fmt::print("Unable to parse Constellation {}", ex.what());
-        }
-        return cst;
-    }
-
-    std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1) /** < Create complete Track from cli */
-    {
-        track t;
-        try
-        {
-            for (int i = 0; i < num_constellations; i++)
-            {
-                fmt::print("Enter Constellation no {}: ", i);
-                auto res = QueryConstellation();
-                auto cst = std::get<constellation>(res);// Throws if error was returned
-                t.stars.push_back(cst);
-            }
-        }
-        catch (std::bad_variant_access const &ex)// Catch previously thrown wrong-type errors
-        {
-            fmt::print("Unable to parse Constellation {}", ex.what());
-        }
-        return t;
-    }
+    /* Transfer functions from cli to db.
+        The database may be busy and/or locked by other threads.
+    */
+    void try_create_star();          /**< Create a star*/
+    void try_create_constellation(); /**< Create a constellaton*/
+    void try_create_track();         /**< Create a star*/
 
 private:
+    // Bind methods with std::function
     void create_defconfig(); /**< Create default config, if not exists */
+
+//     std::variant<star, ParsingErrors> QueryStar(); /**< Read in star from command line */
+//     std::variant<constellation, ParsingErrors> QueryConstellation(std::uint8_t num_stars = 3); /**< Read in complete constellation */
+//     std::variant<track, ParsingErrors> QueryTrack(std::uint8_t num_constellations = 1); /** < Create complete Track from cli */
+   star query_star(); /**< Read in star from command line */
+   constellation query_constellation(std::uint8_t num_stars = 3); /**< Read in complete constellation */
+   track query_track(std::uint8_t num_constellations = 1); /** < Create complete Track from cli */
 };
+

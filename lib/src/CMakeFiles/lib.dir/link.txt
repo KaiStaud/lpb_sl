@@ -1,2 +1,0 @@
-/opt/poky/4.1+snapshot/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-ar qc liblib.a CMakeFiles/lib.dir/tracking.cpp.o CMakeFiles/lib.dir/serialization.cpp.o CMakeFiles/lib.dir/datahandling.cpp.o CMakeFiles/lib.dir/cli.cpp.o CMakeFiles/lib.dir/sysinfo.cpp.o CMakeFiles/lib.dir/datarouter.cpp.o
-/opt/poky/4.1+snapshot/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-ranlib liblib.a

@@ -21,7 +21,7 @@
  * @brief Abstracts an array into an new datatype
  * 
  */
-struct star{
+struct tstar{
 std::int32_t xyz[3];
 };
 
