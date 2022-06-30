@@ -27,6 +27,7 @@ using namespace std::chrono_literals;
 #include <iostream>
 
 etl::queue_mpmc_mutex<ConstellationRequestMsg, 10> db_request_queue;
+Router router;
 
 // Spawn a thread to run the cli on request:
 void recurrent_cli()
@@ -39,10 +40,10 @@ void recurrent_cli()
    char arr[20] = "clean";
    while (true)
    {
-      //std::cout << "Enter a command:";
+      std::cout << "Enter a command:";
       std::cin.getline(arr, sizeof(arr));
       sargv[1] = arr; // Copy input string into argv;
-      //cl.execute(2, sargv);
+      cl.execute(2, sargv);
       std::this_thread::sleep_for(1000ms);
    }
 }
@@ -53,19 +54,21 @@ void db_router()
 
    while (true)
    {
-//      auto item = db_request_queue.pop();
-      std::this_thread::sleep_for(1000ms);
+      auto item = db_request_queue.pop();
+      router.process_queue();
 
+      std::this_thread::sleep_for(1000ms);
    }
 }
 
 int main(int argc, char **argv)
 {
    Datahandling::Storage st("Test");
-   //  st.insert_constellation("test2");
-   std::string s;
+   // //  st.insert_constellation("test2");
+   // std::string s;
 
    auto logger = spdlog::daily_logger_mt("daily_logger", "logs/daily.log", 2, 30);
+   logger->flush_on(spdlog::level::info);
    spdlog::set_default_logger(logger);
    spdlog::info("Starting Devices...");
 
@@ -89,23 +92,20 @@ int main(int argc, char **argv)
    track1.timestamps.push_back(2);
    json j = track1;
 
-   Router router;
-
    ConstellationRequestMsg m1(1);
    Message2 m2(1.2);
    ConstellationCreateMsg m3("Hello");
 
-   etl::send_message(router, m1);
-   etl::send_message(router, ConstellationRequestMsg(2));
-   etl::send_message(router, m2);
-   etl::send_message(router, Message2(3.4));
-   etl::send_message(router, m3);
-   etl::send_message(router, ConstellationCreateMsg("World"));
-   etl::send_message(router, Message4());
-//router.process_queue();
+   // etl::send_message(router, m1);
+   // etl::send_message(router, ConstellationRequestMsg(2));
+   // etl::send_message(router, m2);
+   // etl::send_message(router, Message2(3.4));
+   // etl::send_message(router, m3);
+   // etl::send_message(router, ConstellationCreateMsg("World"));
+   // etl::send_message(router, Message4());
 
-      //std::thread router_thread(db_router);
-      //std::thread first(recurrent_cli); // spawn new thread that calls foo()
-      //first.join();
-      //router_thread.join();                     // Will never join, loops over and over again!
+   std::thread router_thread(db_router);
+   std::thread first(recurrent_cli); // spawn new thread that calls foo()
+   first.join();
+   router_thread.join(); // Will never join, loops over and over again!
 }

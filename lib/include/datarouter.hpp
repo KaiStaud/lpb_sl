@@ -95,3 +95,5 @@ private:
   etl::queue<message_packet, 10> queue;
   void init_storage();
 };
+
+extern Router router;

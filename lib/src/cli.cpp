@@ -52,10 +52,11 @@ void cli::init_user_shortcuts()
                            { try_create_star(); });
      create_constellation->callback([&]()
                                     { try_create_constellation(); });
-     create_track->callback([&]() {});
+     create_track->callback([&]() {try_create_track();});
      define_config->callback([&]() {});
      shutdown->callback([&]() {});
 }
+
 void cli::try_create_star()
 {
      auto what = query_star();
@@ -63,11 +64,12 @@ void cli::try_create_star()
      {
           auto res = std::get<tstar>(what); // Throws if error was returned
           json j = res;
+          etl::send_message(router, ConstellationCreateMsg(j.dump()));
      }
 
      catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
      {
-          fmt::print("Unable to parse Constellation {}", ex.what());
+          fmt::print("Unable to parse Star {}", ex.what());
      }
 }
 
@@ -78,6 +80,7 @@ void cli::try_create_constellation()
      {
           auto res = std::get<constellation>(what); // Throws if error was returned
           json j = res;
+          etl::send_message(router, ConstellationCreateMsg(j.dump()));
      }
 
      catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
@@ -93,12 +96,14 @@ void cli::try_create_track()
      {
           auto res = std::get<track>(what); // Throws if error was returned
           json j = res;
+          etl::send_message(router, ConstellationCreateMsg(j.dump()));
      }
 
      catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
      {
      }
 }
+
 
 void cli::init_dev_shortcuts()
 {

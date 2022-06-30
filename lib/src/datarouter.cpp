@@ -9,23 +9,29 @@
  * 
  */
 #include "../include/datarouter.hpp"
-//#include "spdlog/spdlog.h"
+#include "../include/datahandling.hpp"
+#include "spdlog/spdlog.h"
+
+Datahandling::Storage db("test");
+
 //*****************************************************************************
 // The message router.
 // Handles message types ConstellationRequestMsg, Message2, ConstellationCreateMsg.
 //***************************************************************************
 // Override the base class's receive function.
+
+
 void Router::receive(const etl::imessage &msg_)
 {
   if (accepts(msg_))
   {
     // Place in queue.
     queue.emplace(msg_);
-//  spdlog::info("Routing message. Its type is {} ",int(msg_.get_message_id()));
+  spdlog::info("Routing message. Its type is {} ",int(msg_.get_message_id()));
   }
   else
   {
-//    spdlog::info("Ignoring message, no route available. Its id is{}",int(msg_.get_message_id()));
+    spdlog::info("Ignoring message, no route available. Its id is{}",int(msg_.get_message_id()));
   }
 }
 
@@ -36,7 +42,7 @@ void Router::process_queue()
   {
     message_packet &packet = queue.front();
     etl::imessage &msg = packet.get();
-//    spdlog::info("Forwarding message to its handler. Its id is {}",int(msg.get_message_id()));
+    spdlog::info("Forwarding message to its handler. Its id is {}",int(msg.get_message_id()));
 
     // Call the base class's receive function.
     // This will route it to the correct on_receive handler.
@@ -58,7 +64,7 @@ void Router::on_receive(const ConstellationRequestMsg &msg)
 //***************************************************************************
 void Router::on_receive(const Message2 &msg)
 {
-//  spdlog::info("Received unimplemented message {},{}",int(msg.get_message_id()),msg.d);
+spdlog::info("Received unimplemented message {},{}",int(msg.get_message_id()),msg.d);
 }
 
 //***************************************************************************
@@ -67,7 +73,7 @@ void Router::on_receive(const Message2 &msg)
  */
 void Router::on_receive(const ConstellationCreateMsg &msg)
 {
-
+db.generic_insert("SERDE_CONSTELLATIONS",msg.s);
 }
 
 //***************************************************************************
@@ -76,7 +82,7 @@ void Router::on_receive(const ConstellationCreateMsg &msg)
  */
 void Router::on_receive_unknown(const etl::imessage &msg)
 {
-//  spdlog::info("Received unknown message {}",int(msg.get_message_id()));
+  spdlog::info("Received unknown message {}",int(msg.get_message_id()));
 }
 
 void Router::init_storage()
