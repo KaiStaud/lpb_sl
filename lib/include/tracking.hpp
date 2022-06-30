@@ -16,6 +16,8 @@
 #include <vector>
 #include <etl/circular_buffer.h>
 #include <optional>
+
+
 // struct star
 // {
 //     std::int32_t arm0[3];
@@ -88,37 +90,16 @@ namespace tracking
         void pop_constellation();
         void pop_track();
     };
-
-enum class SimpleProgress{
-not_reached,
-reached,
-already_reached,
-};
-
-enum class RequestState{
-    received_new_star,
-    no_stars_available,
-    pulled_with_error
-};
-/**
- * @brief Tracks movement progress of a single star from received frames.
- * Automatically requests a new star after marking previous as reached.
- * 
- */
-    class SingleStarTracker
+    class StarTracker
     {
-        public:
-        SingleStarTracker();
-        bool AddCheckbox(); //< Attaches a 3d-Box around the star. Reduces Precision for Speed.
-        SimpleProgress IsStarReached(); //<Checks if endpoint of Arm is located at requested star.
-        RequestState RequestNewStar(); //< Pull new star from ringbuffer.
-    };
-    
-    class MultiStarTracker
-    {
-        public:
-        MultiStarTracker();
-    };
 
+    };
+    class ConstellationTracker{
+
+    };
+    class UniverseSynchronizer{
+
+    };
 }
+
 #endif

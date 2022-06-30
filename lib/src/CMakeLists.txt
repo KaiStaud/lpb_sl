@@ -1,11 +1,13 @@
 set (CMAKE_CXX_STANDARD 20)
 
-include_directories( /home/kai/iceoryx_test/lib/include
-/home/kai/iceoryx_test/external/fmt
-/home/kai/iceoryx_test/external/json
-/home/kai/iceoryx_test/external/CLI11
-/home/kai/iceoryx_test/external/etl
-/home/kai/iceoryx_test/external/SQLiteCpp
+include_directories( /home/kai/lpb_sl/lib/include
+/home/kai/lpb_sl/external/fmt
+/home/kai/lpb_sl/external/json
+/home/kai/lpb_sl/external/CLI11
+/home/kai/lpb_sl/external/etl
+/home/kai/lpb_sl/external/SQLiteCpp
+/home/kai/lpb_sl/external/blaze
+
 )
 
 
@@ -16,6 +18,7 @@ datahandling.cpp
 cli.cpp 
 sysinfo.cpp 
 datarouter.cpp 
+forward_kinematics.cpp
 )
 
 target_link_libraries(lib
@@ -27,4 +30,5 @@ target_link_libraries(lib
 sqlite3
 pthread
 dl
+blaze
 ) 

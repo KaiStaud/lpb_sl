@@ -4,14 +4,14 @@
  * @brief Implemenation of Progress Tracking,multi-buffering
  * @version 0.1
  * @date 2022-04-17
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #include "../include/tracking.hpp"
+#include "blaze/Math.h"
 #include "fmt/core.h"
-
 using namespace tracking;
 
 TaskHandler::TaskHandler()
@@ -49,3 +49,4 @@ bool TaskHandler::add_track(track cst)
     track_buffer.push(cst);
     return true;
 }
+
