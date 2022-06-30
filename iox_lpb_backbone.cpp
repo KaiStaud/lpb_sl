@@ -18,6 +18,7 @@
 #include "lib/include/cli.hpp"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/daily_file_sink.h"
+#include "etl/queue_mpmc_mutex.h"
 #include <chrono>
 #include <thread>
 using namespace tracking;
@@ -25,22 +26,36 @@ using nlohmann::json;
 using namespace std::chrono_literals;
 #include <iostream>
 
+etl::queue_mpmc_mutex<ConstellationRequestMsg, 10> db_request_queue;
+
 // Spawn a thread to run the cli on request:
 void recurrent_cli()
 {
    cli cl;
-   // The first string needs to be the name of the binary, 
+   // The first string needs to be the name of the binary,
    // following strings are arguments,options and parameters
    char *sargv[] = {"./iox-lpb-backbone", "clean"};
    // Allocate some memory for the input option:
    char arr[20] = "clean";
    while (true)
    {
-      std::cout << "Enter a command:";
+      //std::cout << "Enter a command:";
       std::cin.getline(arr, sizeof(arr));
       sargv[1] = arr; // Copy input string into argv;
-      cl.execute(2, sargv);
+      //cl.execute(2, sargv);
       std::this_thread::sleep_for(1000ms);
+   }
+}
+
+// Spawn a second thread for routing messages (not RouDI!)
+void db_router()
+{
+
+   while (true)
+   {
+//      auto item = db_request_queue.pop();
+      std::this_thread::sleep_for(1000ms);
+
    }
 }
 
@@ -87,8 +102,10 @@ int main(int argc, char **argv)
    etl::send_message(router, m3);
    etl::send_message(router, ConstellationCreateMsg("World"));
    etl::send_message(router, Message4());
+//router.process_queue();
 
-   // router.process_queue();
-   std::thread first(recurrent_cli); // spawn new thread that calls foo()
-   first.join(); // Will never join, loops over and over again!
+      //std::thread router_thread(db_router);
+      //std::thread first(recurrent_cli); // spawn new thread that calls foo()
+      //first.join();
+      //router_thread.join();                     // Will never join, loops over and over again!
 }

@@ -10,7 +10,9 @@
  */
 #include "../include/cli.hpp"
 #include "../include/tracking.hpp"
-
+#include "../include/serialization.hpp"
+#include "../include/datarouter.hpp"
+#include "../include/datahandling.hpp"
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <variant>
@@ -39,29 +41,65 @@ void cli::init_user_shortcuts()
      app.require_subcommand(1);
 
      auto move_tcp = app.add_subcommand("tcp", "Move tcp to passed vector");
-     auto create_star = app.add_subcommand("create-start", "Create a new star");
+     auto create_star = app.add_subcommand("create-star", "Create a new star");
      auto create_constellation = app.add_subcommand("create-cst", "Create a new constellation");
      auto create_track = app.add_subcommand("create-track", "Create a complete track");
      auto define_config = app.add_subcommand("defconfig", "Use different defconfig");
      auto shutdown = app.add_subcommand("shutdown", "Shutdown system,return to home");
+     auto shutdown_cli = app.add_subcommand("shutdown-cli", "Shutdown cli system");
 
-     create_star->callback([&]() {try_create_star();});
-     create_constellation->callback([&]() {try_create_constellation();});
+     create_star->callback([&]()
+                           { try_create_star(); });
+     create_constellation->callback([&]()
+                                    { try_create_constellation(); });
      create_track->callback([&]() {});
      define_config->callback([&]() {});
      shutdown->callback([&]() {});
 }
-void cli::try_create_star(){
-     query_star();
+void cli::try_create_star()
+{
+     auto what = query_star();
+     try
+     {
+          auto res = std::get<tstar>(what); // Throws if error was returned
+          json j = res;
+     }
+
+     catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
+     {
+          fmt::print("Unable to parse Constellation {}", ex.what());
+     }
 }
 
-void cli::try_create_constellation(){
-     query_constellation();
+void cli::try_create_constellation()
+{
+     auto what = query_constellation();
+     try
+     {
+          auto res = std::get<constellation>(what); // Throws if error was returned
+          json j = res;
+     }
+
+     catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
+     {
+          fmt::print("Unable to parse Constellation {}", ex.what());
+     }
 }
 
-void cli::try_create_track(){
-     query_track();
+void cli::try_create_track()
+{
+     auto what = query_track();
+     try
+     {
+          auto res = std::get<track>(what); // Throws if error was returned
+          json j = res;
+     }
+
+     catch (std::bad_variant_access const &ex) // Catch previously thrown wrong-type errors
+     {
+     }
 }
+
 void cli::init_dev_shortcuts()
 {
      auto clean = app.add_subcommand("clean", "Clean db and config");
@@ -95,7 +133,7 @@ int cli::execute(int argc, char **argv)
      return 0;
 }
 
-std::variant<tstar, ParsingErrors> cli::query_star() /**< Read in star from command line */
+std::variant<tstar, ParsingErrors> cli::query_star(std::istream &stream) /**< Read in star from command line */
 {
      const std::string fmt_inputs[3] = {"x", "y", "z"};
      std::string num_as_string;
@@ -103,7 +141,7 @@ std::variant<tstar, ParsingErrors> cli::query_star() /**< Read in star from comm
      for (int i = 0; i < 3; i++)
      {
           fmt::print("Enter {} Coordinate: ", fmt_inputs[i]);
-          getline(std::cin, num_as_string);
+          getline(stream, num_as_string);
           try
           {
                st.xyz[i] = std::stoi(num_as_string);

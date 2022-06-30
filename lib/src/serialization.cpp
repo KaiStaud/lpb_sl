@@ -1,15 +1,28 @@
 /**
  * @file serialization.cpp
  * @author Kai Staud
- * @brief Implements SERDES functionality for Nlohmanns JSON lib  
+ * @brief Implements SERDES functionality for Nlohmanns JSON lib
  * @version 0.1
  * @date 2022-04-17
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #include "../include/serialization.hpp"
+void to_json(json &j, const tstar &s)
+{
+    j = json{
+        {"xyz", {s.xyz}},
+
+    };
+}
+
+void from_json(const json &j, tstar &s)
+{
+       j.at("xyz").get_to(s.xyz);
+ 
+}
 void to_json(json &j, const constellation &s)
 {
     j = json{

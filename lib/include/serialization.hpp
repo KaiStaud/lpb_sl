@@ -17,7 +17,8 @@
 using namespace tracking;
 
 using nlohmann::json;
-
+void to_json(json &j, const tstar &s);
+void from_json(const json &j, tstar &s);
 void to_json(json &j, const constellation &s);
 void from_json(const json &j, constellation &s);
 void to_json(json &j, const track &s);

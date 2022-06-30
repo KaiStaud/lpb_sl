@@ -15,6 +15,7 @@
 #include "tracking.hpp"
 #include "serialization.hpp"
 #include <iostream>
+#include <istream>
 #include <vector>
 
 using namespace tracking;
@@ -50,7 +51,7 @@ private :
     void
     create_defconfig();                                                                    /**< Create default config, if not exists */
                                                                                            /* Transfer functions from cli to db.The database may be busy and/or locked by other threads.  */
-std::variant<tstar, ParsingErrors> query_star();                                            /**< Read in star from command line */
+std::variant<tstar, ParsingErrors> query_star(std::istream& stream=std::cin);                                            /**< Read in star from command line */
 std::variant<constellation, ParsingErrors> query_constellation(std::uint8_t num_stars = 3); /**< Read in complete constellation */
 std::variant<track, ParsingErrors> query_track(std::uint8_t num_constellations = 1);        /** < Create complete Track from cli */
 }
