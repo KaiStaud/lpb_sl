@@ -18,14 +18,6 @@
 #include <variant>
 #include "CLI11/CLI.hpp"
 
-// enum class ParsingErrors
-// {
-//      no_error = 0,
-//      value_out_of_bound = 1,
-//      incorrect_input = 2,
-//      incorrect_format = 3,
-// };
-
 CLI::App app{"cli to control robotic arm"};
 
 cli::cli()
@@ -47,12 +39,14 @@ void cli::init_user_shortcuts()
      auto define_config = app.add_subcommand("defconfig", "Use different defconfig");
      auto shutdown = app.add_subcommand("shutdown", "Shutdown system,return to home");
      auto shutdown_cli = app.add_subcommand("shutdown-cli", "Shutdown cli system");
+     auto run_program = app.add_subcommand("run-program", "Run {track/star/constellation/universe}");
 
      create_star->callback([&]()
                            { try_create_star(); });
      create_constellation->callback([&]()
                                     { try_create_constellation(); });
-     create_track->callback([&]() {try_create_track();});
+     create_track->callback([&]()
+                            { try_create_track(); });
      define_config->callback([&]() {});
      shutdown->callback([&]() {});
 }
@@ -103,7 +97,6 @@ void cli::try_create_track()
      {
      }
 }
-
 
 void cli::init_dev_shortcuts()
 {

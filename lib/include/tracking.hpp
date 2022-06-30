@@ -4,9 +4,9 @@
  * @brief Implements a multi-buffered Job-Queue
  * @version 0.1
  * @date 2022-04-17
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #ifndef TRACKING_H
@@ -32,21 +32,21 @@
 // } ;
 /**
  * @brief Abstracts an array into an new datatype
- * 
+ *
  */
-struct tstar{
-std::int32_t xyz[3];
+struct tstar
+{
+    std::int32_t xyz[3];
 };
 
 struct tconstellation
 {
     std::vector<tstar> tstars;
-
-} ;
+};
 
 /**
  * @brief Structure encapsulation several stars
- * 
+ *
  */
 struct constellation
 {
@@ -55,24 +55,24 @@ struct constellation
     std::int32_t arm2[3];
     std::int32_t arm3[3];
     std::int32_t tcp[3];
-} ;
+};
 
 /**
  * @brief Structure encapsuling a constellation with a seperated timestamp
- * 
+ *
  */
 struct track
 {
     std::vector<constellation> stars;
     std::vector<std::int32_t> timestamps;
-} ;
+};
 
 namespace tracking
 {
-/**
- * @brief Class for Deploying and commiting jobs.
- * Jobs are buffered in multiple stages
- */
+    /**
+     * @brief Class for Deploying and commiting jobs.
+     * Jobs are buffered in multiple stages
+     */
     class TaskHandler
     {
     private:
@@ -87,6 +87,37 @@ namespace tracking
         bool add_track(track cst);
         void pop_constellation();
         void pop_track();
+    };
+
+enum class SimpleProgress{
+not_reached,
+reached,
+already_reached,
+};
+
+enum class RequestState{
+    received_new_star,
+    no_stars_available,
+    pulled_with_error
+};
+/**
+ * @brief Tracks movement progress of a single star from received frames.
+ * Automatically requests a new star after marking previous as reached.
+ * 
+ */
+    class SingleStarTracker
+    {
+        public:
+        SingleStarTracker();
+        bool AddCheckbox(); //< Attaches a 3d-Box around the star. Reduces Precision for Speed.
+        SimpleProgress IsStarReached(); //<Checks if endpoint of Arm is located at requested star.
+        RequestState RequestNewStar(); //< Pull new star from ringbuffer.
+    };
+    
+    class MultiStarTracker
+    {
+        public:
+        MultiStarTracker();
     };
 
 }

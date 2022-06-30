@@ -57,6 +57,7 @@ add_subdirectory(external/SQLiteCpp)
 add_subdirectory(external/CppGPIO)
 add_subdirectory(external/magic_enum)
 add_subdirectory(external/spdlog)
+add_subdirectory(external/blaze)
 
 
 
@@ -66,6 +67,7 @@ PUBLIC external/fmt
 PUBLIC external/json
 PUBLIC external/CLI11
 PUBLIC external/spdlog
+PUBLIC external/blaze
 PUBLIC lib/include)
 
 target_link_libraries(iox-lpb-backbone 
