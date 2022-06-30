@@ -31,3 +31,9 @@
 [submodule "external/icecream-cpp"]
 	path = external/icecream-cpp
 	url = https://github.com/renatoGarcia/icecream-cpp
+[submodule "external/master"]
+	path = external/master
+	url = https://bitbucket.org/blaze-lib/blaze/src/master/
+[submodule "external/blaze"]
+	path = external/blaze
+	url = https://bitbucket.org/blaze-lib/blaze/src/master/
