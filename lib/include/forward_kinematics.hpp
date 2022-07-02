@@ -30,15 +30,24 @@ namespace forward_kinematics
         RequestState RequestNewStar();                //< Pull new star from ringbuffer.
         SimpleProgress CalculateMovementDirection();
         SimpleProgress CalculateMovementContinuity();
+        tstar ApplyCalmanFilter(double x_p,double x_v,double a_x);
+        bool SetOffsets(std::int32_t b_x, std::int32_t b_y, std::int32_t b_z);
+        void SetKalmanGain(double k_x, double k_y, double k_z);
+        void SetMatrix(blaze::StaticMatrix<double,3UL,3UL> a);
+
     private:
         double distance;
         tstar target_star;
+        blaze::StaticVector<int, 3UL> last_statematrix;
+        blaze::StaticVector<int, 3UL> bias;
+        blaze::StaticMatrix<double, 3UL, 3UL> A;
+        double kalman_gain;
     };
 
     class MultiStarEstimator
     {
     public:
-        MultiStarTracker();
+        MultiStarEstimator();
     };
 
 };

@@ -37,3 +37,6 @@
 [submodule "external/blaze"]
 	path = external/blaze
 	url = https://bitbucket.org/blaze-lib/blaze/src/master/
+[submodule "external/kfr"]
+	path = external/kfr
+	url = https://github.com/kfrlib/kfr
