@@ -36,7 +36,7 @@ TEST_CASE("SingleStar Estimator in one dimension")
     double measurement_error = 4;
 
     std::vector<double> measurements = {68, 75, 71, 70, 74};
-    std::vector<double> correct_estimates = {68,70.33, 70.5, 70.4, 71};
+    std::vector<double> correct_estimates = {68, 70.33, 70.5, 70.4, 71};
     std::vector<double> correct_kg = {0.33, 0.25, 0.20, 0.17};
     std::vector<double> correct_estimated_errors = {1.33, 1.0, 0.8, 0.66};
 
@@ -77,10 +77,8 @@ TEST_CASE("SingleStar Estimator in one dimension")
         all_kalman_gains[i] = kalman_gain;
         fmt::print("error_est = [1-{:.2f}]*{:.2f}\r\n\n", kalman_gain, all_estimated_errors[i - 1]);
     }
-        // // Check if values are correct:
-        // std::vector<int> some_vec{1, 2, 3};
-        REQUIRE_THAT(all_estimates, Catch::Matchers::Equals(correct_estimates));
-        REQUIRE_THAT(all_estimated_errors, Catch::Matchers::Equals(correct_estimated_errors));
-        REQUIRE_THAT(all_kalman_gains, Catch::Matchers::Equals(correct_kg));
 
+    REQUIRE_THAT(all_estimates, Catch::Matchers::Equals(correct_estimates));
+    REQUIRE_THAT(all_estimated_errors, Catch::Matchers::Equals(correct_estimated_errors));
+    REQUIRE_THAT(all_kalman_gains, Catch::Matchers::Equals(correct_kg));
 }

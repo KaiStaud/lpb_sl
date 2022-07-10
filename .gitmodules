@@ -43,3 +43,9 @@
 [submodule "external/FakeIt"]
 	path = external/FakeIt
 	url = https://github.com/eranpeer/FakeIt
+[submodule "external/tinyspline"]
+	path = external/tinyspline
+	url = https://github.com/msteinbeck/tinyspline
+[submodule "external/gcovr"]
+	path = external/gcovr
+	url = https://github.com/gcovr/gcovr
