@@ -12,7 +12,7 @@ include_directories( /home/kai/lpb_sl/lib/include
 )
 
 enable_testing()
-add_executable(tests forwardkinematics_test.cpp)
+add_executable(tests forward_kinematics_test.cpp example_test.cpp)
 
 target_link_libraries(tests
 lib
