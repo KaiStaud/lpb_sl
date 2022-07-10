@@ -46,6 +46,8 @@ target_compile_features(iox-lpb-backbone PRIVATE cxx_std_17)
 #target_compile_features(iox-lpb-backbone PRIVATE cxx_std_17)
 
 add_subdirectory(lib)
+add_subdirectory(test)
+
 link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/include)
 link_directories(${ICEORYX_TEST_SOURCE_DIR}/lib/src)
 
@@ -58,6 +60,8 @@ add_subdirectory(external/CppGPIO)
 add_subdirectory(external/magic_enum)
 add_subdirectory(external/spdlog)
 add_subdirectory(external/blaze)
+add_subdirectory(external/Catch2)
+
 
 
 
@@ -68,6 +72,7 @@ PUBLIC external/json
 PUBLIC external/CLI11
 PUBLIC external/spdlog
 PUBLIC external/blaze
+PUBLIC external/Catch2
 PUBLIC lib/include)
 
 target_link_libraries(iox-lpb-backbone 
