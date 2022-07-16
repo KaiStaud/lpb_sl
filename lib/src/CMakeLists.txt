@@ -19,6 +19,8 @@ cli.cpp
 sysinfo.cpp 
 datarouter.cpp 
 forward_kinematics.cpp
+inverse_kinematics.cpp
+kalman_filter.cpp
 )
 
 target_link_libraries(lib

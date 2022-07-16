@@ -34,9 +34,9 @@ TEST_CASE("SingleStar Estimator in one dimension")
     double initial_error = 2;
     double initial_measurement = 75;
     double measurement_error = 4;
-
+ 
     std::vector<double> measurements = {68, 75, 71, 70, 74};
-    std::vector<double> correct_estimates = {68, 70.33, 70.5, 70.4, 71};
+    std::vector<double> correct_estimates = {68, 70.3333358765, 70.5, 70.4, 71};
     std::vector<double> correct_kg = {0.33, 0.25, 0.20, 0.17};
     std::vector<double> correct_estimated_errors = {1.33, 1.0, 0.8, 0.66};
 

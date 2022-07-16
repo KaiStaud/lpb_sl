@@ -133,4 +133,5 @@ int main(int argc, char **argv)
    std::thread first(recurrent_cli); // spawn new thread that calls foo()
    first.join();
    router_thread.join(); // Will never join, loops over and over again!
+
 }

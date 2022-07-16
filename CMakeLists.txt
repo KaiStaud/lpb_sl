@@ -76,7 +76,7 @@ PUBLIC external/Catch2
 PUBLIC lib/include)
 
 target_link_libraries(iox-lpb-backbone 
-lib
+lib openblas
     )
 #target_link_libraries(iox-lpb-cli 
 #lib
