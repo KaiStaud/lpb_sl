@@ -27,17 +27,9 @@ TEST_CASE("Kalman Filter")
     F(0, 1) = F(1, 2) = F(3, 4) = F(4, 5) = 1;
     F(0, 2) = F(3, 5) = 0.5;
 
-    MatrixXd Q(6UL, 6UL);
-
-    for (int i = 0; i < 6; i++)
-    {
-        Q(i, i) = 1;
-    }
-
+    MatrixXd Q(6UL, 6UL);Q.setIdentity();
     Q(0, 1) = Q(0, 2) = Q(1, 0) = Q(2, 1) = Q(3, 4) = Q(3, 5) = Q(4, 3) = Q(5, 3) = 1;
-
     Q(2, 1) = Q(1, 2) = Q(4, 5) = Q(5, 4) = 1;
-
     Q = Q * pow(0.2, 2);
 
     MatrixXd P2(6UL, 6UL);
@@ -76,9 +68,13 @@ TEST_CASE("Kalman Filter")
     kfilter.set_gain_matrix(k1);
     kfilter.set_identity_matrix(I);
     kfilter.update(z1);
-    // k1 = P2 * H.transpose() * (H * P2 * H.transpose() + R).inverse();
-    // x_hut = x_hut+k1*(z1-H*x_hut);
-    // P2 = (I - k1 * H) * P2 * (I - k1 * H).transpose() + k1 * R * k1.transpose();
+    
+    // Generate Testvalues!
+    k1 = P2 * H.transpose() * (H * P2 * H.transpose() + R).inverse();
+    x_hut = x_hut+k1*(z1-H*x_hut);
+    P2 = (I - k1 * H) * P2 * (I - k1 * H).transpose() + k1 * R * k1.transpose();
+    // 
+    
     /* PREDICT */
     x_prediction = F * x_hut;
     P2 = F * P2 * F.transpose() + Q;
@@ -87,5 +83,5 @@ TEST_CASE("Kalman Filter")
     z1[1] = messwert_y[1];
     kfilter.update(z1);
     // Iterate over measurements:
-    REQUIRE(0 == 1);
+    CHECK(kfilter.update(z1)==x_hut);
 }

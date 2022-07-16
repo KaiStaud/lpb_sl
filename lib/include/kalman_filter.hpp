@@ -20,7 +20,7 @@ public:
     void process();
     void initialize();
     void measure();
-    void update( VectorXd z);
+    VectorXd update( VectorXd z);
     void predict();
 
 private:

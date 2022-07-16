@@ -1,9 +1,8 @@
-#include "blaze/Math.h"
+#include <eigen3/Eigen/Dense>
 #include <math.h>
 #include <utility>
 
-using blaze::StaticVector;
-using blaze::DynamicVector;
+using Eigen::VectorXd;
 
 #define PI 3.14159265
 
@@ -22,11 +21,11 @@ enum class IK_Error
 // Helper Funktionen:
 
 // Geradengleichung aus Vektor bestimmen:
-std::pair<double, double> calculate_vector_fx(double m, StaticVector<double, 3UL> v);
-std::pair<double, double> calculate_vector_fx(StaticVector<double, 3UL> v, StaticVector<double, 3UL> y);
+std::pair<double, double> calculate_vector_fx(double m, Eigen::Vector3d v);
+std::pair<double, double> calculate_vector_fx(Eigen::Vector3d v, Eigen::Vector3d y);
 
 // Schnittpunkt (intersection) von zwei vektoren bestimmen:
-StaticVector<double, 3UL> calculate_intersection(double a, double b, double m, double u);
+Eigen::VectorXd calculate_intersection(double a, double b, double m, double u);
 
 // Perform a simple IK: If not set, use preset tuple:
-IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, StaticVector<double, 3UL> e_r = {5, 5, 0});
+IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, Eigen::VectorXd e_r = {5, 5, 0});

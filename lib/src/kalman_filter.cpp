@@ -36,11 +36,11 @@ void KalmanFilter::initialize() {
     P = F * P * F.transpose() + Q;
 }
 void KalmanFilter::measure() {}
-void KalmanFilter::update( VectorXd z) {
+VectorXd KalmanFilter::update( VectorXd z) {
     k1 = P * H.transpose() * (H * P * H.transpose() + R).inverse();
     x_hut = x_hut+k1*(z-H*x_hut);
     P = (I - k1 * H) * P * (I - k1 * H).transpose() + k1 * R * k1.transpose();
-    std::cout << x_hut << "\r\n";
+    return x_hut;
 
 }
 void KalmanFilter::predict() 

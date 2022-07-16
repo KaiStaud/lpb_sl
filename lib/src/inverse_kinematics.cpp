@@ -1,10 +1,9 @@
-#include "blaze/Math.h"
+#include <eigen3/Eigen/Dense>
 #include <math.h>
 #include <utility>
 #include "../include/forward_kinematics.hpp"
-
-using blaze::StaticVector;
-using blaze::DynamicVector;
+#include <iostream>
+using Eigen::VectorXd;
 
 #define PI 3.14159265
 
@@ -12,7 +11,7 @@ using blaze::DynamicVector;
 
 // Geradengleichung aus Vektor bestimmen:
 
-std::pair<double, double> calculate_vector_fx(double m, StaticVector<double, 3UL> v)
+std::pair<double, double> calculate_vector_fx(double m, Eigen::Vector3d v)
 {
 
     auto b = v[1] - m * v[0];
@@ -22,9 +21,9 @@ std::pair<double, double> calculate_vector_fx(double m, StaticVector<double, 3UL
     return fx_params;
 }
 
-std::pair<double, double> calculate_vector_fx(StaticVector<double, 3UL> v, StaticVector<double, 3UL> y)
+std::pair<double, double> calculate_vector_fx(Eigen::Vector3d v, Eigen::Vector3d y)
 {
-
+std::cout <<v << y;
     auto m = (v[1] - y[1]) / (v[0] - y[0]);
 
     auto b = v[1] - m * v[0];
@@ -36,10 +35,10 @@ std::pair<double, double> calculate_vector_fx(StaticVector<double, 3UL> v, Stati
 
 // Schnittpunkt (intersection) von zwei vektoren bestimmen:
 
-StaticVector<double, 3UL> calculate_intersection(double a, double b, double m, double u)
+Eigen::VectorXd calculate_intersection(double a, double b, double m, double u)
 {
 
-    StaticVector<double, 3UL> i;
+    Eigen::VectorXd i;
 
     i[0] = (u - b) / (a - m);
 
@@ -61,18 +60,13 @@ enum class IK_Error
 
 // Perform a simple IK: If not set, use preset tuple:
 
-IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, StaticVector<double, 3UL> e_r = {5, 5, 0})
+IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, Eigen::VectorXd e_r = {5, 5, 0})
 {
-
-    // Instantiation of a static 3D column vector. The vector is directly initialized as
-
-    StaticVector<double, 3UL> a{4, -2, 5};
-
     // Instantiation of a dynamic 3D column vector. Via the subscript operator the values are set to
 
-    DynamicVector<double> e_2(3UL);
+    Eigen::VectorXd e_2(3UL);
 
-    DynamicVector<double> e_1(3UL);
+    Eigen::VectorXd e_1(3UL);
 
     e_r[0] = 5;
 
@@ -82,9 +76,8 @@ IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, StaticVector
 
     // Fehlerfaelle pruefen:
 
-    if (length(e_r) > num_effectors * sizeof_arm)
+    if (e_r.norm()> num_effectors * sizeof_arm)
     {
-
         return IK_Error::out_of_range;
     }
 
@@ -98,21 +91,21 @@ IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, StaticVector
 
 //        std::cout << "\r\n Alpha [rad] = " << alpha;
 
-        auto y_stuetzvektor = sin(alpha) * (length(e_r) / 2);
+        auto y_stuetzvektor = sin(alpha) * (e_r.norm() / 2);
 
-        auto x_stuetzvektor = cos(alpha) * (length(e_r) / 2);
+        auto x_stuetzvektor = cos(alpha) * (e_r.norm() / 2);
         ;
 
         // Normalvektor berechnen:
 
-        auto sizeof_n = sqrt(pow(sizeof_arm, 2) - pow(length(e_r) / 2, 2));
+        auto sizeof_n = sqrt(pow(sizeof_arm, 2) - pow(e_r.norm() / 2, 2));
 
         // std::cout << "\r\n Zielvektor-Länge=  = " << length(e_r) / 2;
         // std::cout << "\r\n Normalvektor-Länge=  = " << sizeof_n;
 
         // Jetzt den Winkel zwischen effektor1 und x Achse berechen
 
-        auto beta = alpha + (sizeof_n / (length(e_r) / 2));
+        auto beta = alpha + (sizeof_n / (e_r.norm() / 2));
 
 //        std::cout << "\r\n Beta [rad] = " << beta;
 
