@@ -13,21 +13,23 @@ TEST_CASE("Kalman Filter")
     double messwert_y[] = {300.4, 301.78, 295.1, 305.19, 301.06, 302.05, 300, 303.57, 296.33, 297.65, 297.41, 299.61, 299.6, 302.39, 295.04, 300.09, 294.72, 298.61, 294.64, 284.88, 272.82, 264.93, 251.46, 241.27, 222.98, 203.73, 184.1, 166.12, 138.71, 119.71, 100.41, 79.76, 50.62, 32.99, 2.14};
 
     VectorXd x_hut(6);
+    x_hut.setZero();
     VectorXd x_prediction(6);
 
     MatrixXd P(6UL, 6UL);
-    P(0, 0) = 500;
-    P(1, 1) = 500;
-    P(2, 2) = 500;
-    P(3, 3) = 500;
-    P(4, 4) = 500;
-    P(5, 5) = 500;
+    P.setZero();
+    P.setIdentity();
+    P = P * 500;
 
-    MatrixXd F(6UL, 6UL);F.setIdentity();
+    MatrixXd F(6UL, 6UL);
+    F.setZero();
+    F.setIdentity();
     F(0, 1) = F(1, 2) = F(3, 4) = F(4, 5) = 1;
     F(0, 2) = F(3, 5) = 0.5;
 
-    MatrixXd Q(6UL, 6UL);Q.setIdentity();
+    MatrixXd Q(6UL, 6UL);
+    Q.setZero();
+    Q.setIdentity();
     Q(0, 1) = Q(0, 2) = Q(1, 0) = Q(2, 1) = Q(3, 4) = Q(3, 5) = Q(4, 3) = Q(5, 3) = 1;
     Q(2, 1) = Q(1, 2) = Q(4, 5) = Q(5, 4) = 1;
     Q = Q * pow(0.2, 2);
@@ -42,10 +44,12 @@ TEST_CASE("Kalman Filter")
     P2 = F * P * F.transpose() + Q;
 
     MatrixXd R(2UL, 2UL);
+    R.setZero();
 
     R(0, 0) = R(1, 1) = 9;
 
     MatrixXd H(2UL, 6UL);
+    H.setZero();
 
     H(0, 0) = H(1, 3) = 1;
 
@@ -53,36 +57,39 @@ TEST_CASE("Kalman Filter")
     kfilter.load_observation_matrix(H);
 
     /* MEASURE */
-    // Messwerte abholen
 
-    VectorXd z1(2UL); //{messwert_x[0],messwert_y[0]};
+    VectorXd z1(2UL);
 
     z1[0] = messwert_x[0];
     z1[1] = messwert_y[0];
 
     /* UPDATE */
     MatrixXd k1(6UL, 2UL);
+    k1.setZero();
     const int size = 6;
     MatrixXd I(size, size);
     I.setIdentity();
     kfilter.set_gain_matrix(k1);
     kfilter.set_identity_matrix(I);
-    kfilter.update(z1);
-    
-    // Generate Testvalues!
+    auto first_estimate=kfilter.update(z1); // Calculated by estimator class
+
     k1 = P2 * H.transpose() * (H * P2 * H.transpose() + R).inverse();
-    x_hut = x_hut+k1*(z1-H*x_hut);
+    x_hut = x_hut + k1 * (z1 - H * x_hut); // Calculated manually
     P2 = (I - k1 * H) * P2 * (I - k1 * H).transpose() + k1 * R * k1.transpose();
-    // 
-    
+
+    CHECK(x_hut==first_estimate); // Should be identical!
+
     /* PREDICT */
     x_prediction = F * x_hut;
     P2 = F * P2 * F.transpose() + Q;
     kfilter.predict();
+
+    /* Grab a new measurement and update State:*/
     z1[0] = messwert_x[1];
     z1[1] = messwert_y[1];
-    std::cout <<kfilter.update(z1);
-    //std::cout << x_hut;
+    
+    kfilter.update(z1);
+    kfilter.predict();
+
     // Iterate over measurements:
-    //CHECK(kfilter.update(z1)==x_hut);
 }
