@@ -23,7 +23,6 @@ std::pair<double, double> calculate_vector_fx(double m, Eigen::Vector3d v)
 
 std::pair<double, double> calculate_vector_fx(Eigen::Vector3d v, Eigen::Vector3d y)
 {
-std::cout <<v << y;
     auto m = (v[1] - y[1]) / (v[0] - y[0]);
 
     auto b = v[1] - m * v[0];
@@ -35,14 +34,15 @@ std::cout <<v << y;
 
 // Schnittpunkt (intersection) von zwei vektoren bestimmen:
 
-Eigen::VectorXd calculate_intersection(double a, double b, double m, double u)
+Eigen::Vector3d calculate_intersection(double a, double b, double m, double u)
 {
 
-    Eigen::VectorXd i;
+    Eigen::Vector3d i;
 
     i[0] = (u - b) / (a - m);
 
     i[1] = a * i[0] + b;
+    i[2] = 0;
 
     return i;
 }
@@ -60,13 +60,13 @@ enum class IK_Error
 
 // Perform a simple IK: If not set, use preset tuple:
 
-IK_Error simple_ik(double sizeof_arm = 4, double num_effectors = 2, Eigen::VectorXd e_r = {5, 5, 0})
+IK_Error simple_ik(double sizeof_arm = 4,double num_effectors = 2, Eigen::Vector3d e_r={5,5,0})
 {
     // Instantiation of a dynamic 3D column vector. Via the subscript operator the values are set to
 
-    Eigen::VectorXd e_2(3UL);
+    Eigen::Vector3d e_2;//(3UL);
 
-    Eigen::VectorXd e_1(3UL);
+    Eigen::Vector3d e_1;//(3UL);
 
     e_r[0] = 5;
 

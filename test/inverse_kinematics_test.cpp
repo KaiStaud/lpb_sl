@@ -6,29 +6,27 @@
 #include <eigen3/Eigen/Dense>
 
 using Eigen::Vector3d;
-// TEST_CASE("Inverse Kinematik mit zwei Gliedern")
-// {
+TEST_CASE("Inverse Kinematik mit zwei Gliedern")
+{
 
-//     Vector3d t1{0, 0, 5};
-//     Vector3d t2{5, 5, 5};
-//     Vector3d t3{0, 5, 5};
-//     Vector3d t4{5, 0, 5};
+    Vector3d t1{0, 0, 5};
+    Vector3d t2{5, 5, 5};
+    Vector3d t3{0, 5, 5};
+    Vector3d t4{5, 0, 5};
 
-//     auto res1 = calculate_vector_fx(t1, t2);
+    auto res1 = calculate_vector_fx(t1, t2);
 
-//     std::cout << res1.first << " " << res1.second << "\r\n";
+    INFO(res1.first << " " << res1.second << "\r\n");
 
-//     auto res2 = calculate_vector_fx(t3, t4);
+    auto res2 = calculate_vector_fx(t3, t4);
 
-//     std::cout << res2.first << " " << res2.second << "\r\n";
+    INFO(res2.first << " " << res2.second << "\r\n");
 
-//     auto intersection = calculate_intersection(res1.first, res1.second, res2.first, res2.second);
+    auto intersection = calculate_intersection(res1.first, res1.second, res2.first, res2.second);
 
-//     std::cout << intersection[0] << " " << intersection[1];
-
-//     MATCH(2.5,2.5)
-//     REQUIRE(simple_ik() == 1);
-// }
+    INFO(intersection[0] << " " << intersection[1]);
+    CHECK(simple_ik(4, 2, Vector3d(5, 5, 0)) == IK_Error::ik_solved);
+}
 
 TEST_CASE("Schnittpunkte von zwei Vektoren")
 {
@@ -40,18 +38,17 @@ TEST_CASE("Schnittpunkte von zwei Vektoren")
 
     auto res1 = calculate_vector_fx(t1, t2);
 
-    // std::cout << res1.first << " " << res1.second << "\r\n";
+    INFO(res1.first << " " << res1.second << "\r\n");
 
-    // auto res2 = calculate_vector_fx(t3, t4);
+    auto res2 = calculate_vector_fx(t3, t4);
 
-    // std::cout << res2.first << " " << res2.second << "\r\n";
+    INFO(res2.first << " " << res2.second << "\r\n");
 
-    // auto intersection = calculate_intersection(res1.first, res1.second, res2.first, res2.second);
+    auto intersection = calculate_intersection(res1.first, res1.second, res2.first, res2.second);
 
-    // std::cout << intersection[0] << " " << intersection[1];
+    INFO(intersection[0] << " " << intersection[1]);
 
-    // // MATCH(2.5,2.5)
-    // CHECK(res1 == std::make_pair<double, double>(1, 0));
-    // CHECK(res2 == std::make_pair<double, double>(-1, 5));
-    // // CHECK(intersection==std::make_pair<double,double>(2.5,2.5));
+    CHECK(res1 == std::make_pair<double, double>(1, 0));
+    CHECK(res2 == std::make_pair<double, double>(-1, 5));
+    CHECK(intersection == Eigen::Vector3d(2.5, 2.5, 0));
 }
