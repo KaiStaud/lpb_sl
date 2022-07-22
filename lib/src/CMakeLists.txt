@@ -5,7 +5,6 @@ include_directories( /home/kai/lpb_sl/lib/include
 /home/kai/lpb_sl/external/json
 /home/kai/lpb_sl/external/CLI11
 /home/kai/lpb_sl/external/etl
-/home/kai/lpb_sl/external/SQLiteCpp
 /home/kai/lpb_sl/external/blaze
 
 )
@@ -21,6 +20,7 @@ datarouter.cpp
 forward_kinematics.cpp
 inverse_kinematics.cpp
 kalman_filter.cpp
+linked_movements.cpp
 )
 
 target_link_libraries(lib
@@ -28,8 +28,7 @@ target_link_libraries(lib
  CLI11 
  nlohmann_json 
  etl  
- SQLiteCpp
-sqlite3
+ sqlite3
 pthread
 dl
 blaze
