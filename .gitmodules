@@ -1,6 +1,3 @@
-[submodule "external/SQLiteCpp"]
-	path = external/SQLiteCpp
-	url = https://github.com/SRombauts/SQLiteCpp
 [submodule "external/iceoryx"]
 	path = external/iceoryx
 	url = https://github.com/eclipse-iceoryx/iceoryx.git
@@ -28,9 +25,6 @@
 [submodule "external/magic_enum"]
 	path = external/magic_enum
 	url = https://github.com/Neargye/magic_enum
-[submodule "external/icecream-cpp"]
-	path = external/icecream-cpp
-	url = https://github.com/renatoGarcia/icecream-cpp
 [submodule "external/master"]
 	path = external/master
 	url = https://bitbucket.org/blaze-lib/blaze/src/master/
@@ -40,12 +34,6 @@
 [submodule "external/kfr"]
 	path = external/kfr
 	url = https://github.com/kfrlib/kfr
-[submodule "external/FakeIt"]
-	path = external/FakeIt
-	url = https://github.com/eranpeer/FakeIt
 [submodule "external/tinyspline"]
 	path = external/tinyspline
 	url = https://github.com/msteinbeck/tinyspline
-[submodule "external/gcovr"]
-	path = external/gcovr
-	url = https://github.com/gcovr/gcovr
