@@ -31,8 +31,13 @@ namespace linked_movements
 
         class generic_ramp
         {
+        protected:
+            generic_ramp(){};
+
         public:
-            virtual double v(int t, double diff_position);
+            virtual ~generic_ramp(){};
+
+            virtual double v(int t, double diff_position) = 0;
             virtual void update_params(ramp_params params) = 0;
             virtual ramp_error recalculate_ramp(int ramp_time, double new_position) = 0;
 
@@ -47,6 +52,8 @@ namespace linked_movements
         class trapezoidal_ramp : public generic_ramp
         {
         public:
+            trapezoidal_ramp(){};
+            ~trapezoidal_ramp(){};
             void update_params(ramp_params new_params);
             ramp_error recalculate_ramp(int ramp_time, double new_position);
             double v(int t, double diff_position);
@@ -59,6 +66,11 @@ namespace linked_movements
             double diff_max;
         };
     }
+
+    class ramp_factory{
+
+    };
+
     class sync_manager
     {
     public:
@@ -66,7 +78,7 @@ namespace linked_movements
         void link_child(movement_profiles::generic_ramp *new_child);
 
     private:
-        etl::vector<movement_profiles::generic_ramp*, 10> childs;
+        etl::vector<movement_profiles::generic_ramp *, 10> childs;
     };
 
 }

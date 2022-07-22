@@ -63,10 +63,17 @@ double trapezoidal_ramp::v(int t, double diff_position)
     }
 }
 
-void sync_manager::link_child(movement_profiles::generic_ramp *new_child){
-childs.push_back(new_child);
+double trapezoidal_ramp::get_start_position()
+{
+}
+double trapezoidal_ramp::get_start_speed()
+{
+}
+void sync_manager::link_child(movement_profiles::generic_ramp *new_child)
+{
+    childs.push_back(new_child);
 }
 
-void sync_manager::synchronize_childs(int sync_time){
-    
+void sync_manager::synchronize_childs(int sync_time)
+{
 }
