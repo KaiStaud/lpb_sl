@@ -1,0 +1,206 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Test
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+
+  milestone-check:
+    runs-on: ubuntu-20.04
+
+    continue-on-error: true
+
+    env:
+      PR_MILESTONE: "${{ github.event.pull_request.milestone.number }}"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check if PR is assigned to a milestone
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        if [ -z "$PR_MILESTONE" ]; then
+          echo 'No milestone selected for PR'
+          exit 1
+        fi
+        exit 0
+
+  changelog-check:
+    runs-on: ubuntu-20.04
+
+    env:
+      PR_BODY: "${{ github.event.pull_request.body }}"
+      CHANGELOG_ISSUE: ":issue:`${{ github.event.pull_request.number }}`"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check if PR is mentioned in changelog
+      if: ${{ always() }}
+      run: |
+        if [ -z "${{ github.event.pull_request.number }}" ]; then
+          echo 'No PR defined'
+        else
+          if grep -qE '^\[no changelog\]' <<<"$PR_BODY"; then
+            echo 'Marker "[no changelog]" found in PR body'
+            if [ "$(grep -F "$CHANGELOG_ISSUE" CHANGELOG.rst)" != "" ]; then
+              echo "ERROR: $CHANGELOG_ISSUE found in CHANGELOG.rst."
+              exit 1
+            else
+              echo "OK: $CHANGELOG_ISSUE not found in CHANGELOG.rst"
+            fi
+          else
+            echo 'Marker "[no changelog]" not found in PR body'
+            if [ "$(grep -F "$CHANGELOG_ISSUE" CHANGELOG.rst)" == "" ]; then
+              echo "ERROR: $CHANGELOG_ISSUE not found in CHANGELOG.rst."
+              exit 1
+            else
+              echo "OK: $CHANGELOG_ISSUE found in CHANGELOG.rst"
+            fi
+          fi
+        fi
+        exit 0
+
+  build:
+    runs-on: ${{ matrix.os }}
+
+    needs: [milestone-check, changelog-check]
+
+    # Testing strategy
+    # ----------------
+    #
+    # We have different axes of the testing matrix:
+    #
+    # OS: Linux, Windows
+    # Compiler: GCC-5, GCC-6, GCC-8, Clang-10
+    # Python: 3.7 -- 3.10, pypy3
+    #
+    # Instead of testing all combinations, we try to achieve full coverage
+    # across each axis. The main test matrix just represents the Python axis on
+    # Linux. The OS=Windows and Compiler axis are added manually.
+    #
+    # Some cases (Linux with Python 3.7, Clang-10) are handled via the Docker-tests.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        gcc: [gcc-8]
+        python-version: ['3.8', '3.9', '3.10', 'pypy-3.7'] # 3.7 is used in Docker
+
+        include:
+
+          # Test additional compilers with Linux.
+          # Note that Clang-10 and Clang-13 is handled via Docker.
+          - os: ubuntu-18.04
+            gcc: gcc-5
+            python-version: '3.8'
+          - os: ubuntu-18.04
+            gcc: gcc-6
+            python-version: '3.8'
+          - os: ubuntu-20.04
+            gcc: gcc-9
+            python-version: '3.10'
+
+          # Test minimum and maximum Python version on Windows.
+          - os: windows-2019
+            gcc: gcc-8
+            python-version: '3.7'
+          - os: windows-2019
+            gcc: gcc-8
+            python-version: '3.10'
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup environment
+      run: |
+        # Enable coverage for specific target configurations
+        case "${{ matrix.os }}/${{ matrix.gcc }}/${{ matrix.python-version }}" in
+          windows-2019/gcc-8/3.7) USE_COVERAGE=true ;;
+          ubuntu-18.04/gcc-6/3.8) USE_COVERAGE=true ;;
+          *)                      USE_COVERAGE=false ;;
+        esac
+        echo USE_COVERAGE=$USE_COVERAGE >> $GITHUB_ENV
+      shell: bash
+    - name: Install msys with GCC (Windows)
+      if: ${{ startsWith(matrix.os,'windows-') }}
+      uses: msys2/setup-msys2@v2
+      with:
+        install: gcc make
+    - name: Install GCC (Linux)
+      if: ${{ startsWith(matrix.os,'ubuntu-') }}
+      run: |
+        sudo apt update
+        sudo apt-get install -y make ${{ matrix.gcc }} $(echo ${{ matrix.gcc }} | sed -e 's/gcc/g\+\+/')
+        sudo apt-get clean
+    - name: Install ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Install libxml2 and libxslt dev (pypy3)
+      if: ${{ startsWith(matrix.os,'ubuntu-') && ( matrix.python-version == 'pypy3' ) }}
+      run: |
+        sudo apt-get install -y libxml2-dev libxslt-dev
+        sudo apt-get clean
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        # This path is specific to Ubuntu
+        path: ~/.cache/pip
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-pip-${{ hashFiles('noxfile.py', 'doc/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Install dependencies
+      run: |
+        python3 -m pip install nox codecov
+    - name: Lint files
+      run: |
+        nox --non-interactive --session lint
+    - name: Test with pytest
+      run: |
+        nox --non-interactive --session "tests_compiler(${{ matrix.gcc }})" -- --archive_differences
+    - name: Upload pytest test results
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: diffs-${{ matrix.os }}-${{ matrix.gcc }}-${{ matrix.python-version }}
+        path: gcovr/tests/diff.zip
+    - name: Creating coverage report
+      if: ${{ env.USE_COVERAGE == 'true' }}
+      run: |
+        codecov --flags ${{ matrix.os }} -X gcov search
+    - name: Generate documentation
+      run: |
+        make doc
+
+  run-docker:
+    runs-on: ubuntu-18.04
+    needs: [milestone-check, changelog-check]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        gcc: [gcc-5, gcc-6, gcc-8, gcc-9, gcc-10, gcc-11, clang-10, clang-13]
+
+    steps:
+    - name: Install dependencies
+      run: |
+        python3 -m pip install nox
+    - uses: actions/checkout@v2
+    - name: Build Docker
+      run: |
+        python3 -m nox --non-interactive --session "docker_qa_build_compiler(${{ matrix.gcc }})"
+    - name: Run Docker
+      run: |
+        python3 -m nox --non-interactive --session "docker_qa_run_compiler(${{ matrix.gcc }})"
+    - name: Upload pytest test results
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: diffs-docker-${{ matrix.gcc }}
+        path: gcovr/tests/diff.zip
