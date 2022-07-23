@@ -17,9 +17,9 @@ TEST_CASE("Error checking for trapezoidal ramp")
         .v_max = 4,
     };
     tp1.update_params(params);
-    CHECK(tp1.recalculate_ramp(10,10) == ramp_error::no_error);
-    CHECK(tp1.recalculate_ramp(1,10) == ramp_error::acceleration_to_low);
-    CHECK(tp1.recalculate_ramp(5,10) == ramp_error::too_short_deacceleration);
+    CHECK(tp1.recalculate_ramp(4,8) == ramp_error::no_error);
+    CHECK(tp1.recalculate_ramp(1,8) == ramp_error::acceleration_to_low);
+    CHECK(tp1.recalculate_ramp(3,8) == ramp_error::too_short_deacceleration);
 
 }
 
